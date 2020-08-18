@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bottom_nav_graph.xml"
+    app:startDestination="@id/homeFragment">
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.scheduledmessenger.ui.home.HomeFragment"
+        android:label="HomeFragment"
+        tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/timelineFragment"
+        android:name="com.example.scheduledmessenger.ui.timeline.TimelineFragment"
+        android:label="TimelineFragment" />
+    <fragment
+        android:id="@+id/logFragment"
+        android:name="com.example.scheduledmessenger.ui.log.LogFragment"
+        android:label="LogFragment" />
+    <fragment
+        android:id="@+id/settingFragment"
+        android:name="com.example.scheduledmessenger.ui.setting.SettingFragment"
+        android:label="SettingFragment" />
+</navigation>

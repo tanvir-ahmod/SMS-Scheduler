@@ -32,7 +32,7 @@ object NetWorkModule {
     @Provides
     fun providesRetrofit(gson: Gson, client: OkHttpClient): Retrofit.Builder =
         Retrofit.Builder()
-            .baseUrl("https://api.nasa.gov/")
+            .baseUrl("base_url")
             .client(client)
             .addConverterFactory(GsonConverterFactory.create(gson))
 

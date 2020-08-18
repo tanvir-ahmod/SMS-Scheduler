@@ -39,4 +39,5 @@ ext {
     gsonVersion = '2.8.6'
     okhttpInterceptorVersion = '4.8.0'
     roomVersion = "2.2.5"
+    navVersion = "2.1.0"
 }
