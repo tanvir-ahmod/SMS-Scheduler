@@ -6,12 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".ui.home.HomeFragment">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Log"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/item_log" />
+
+        <include layout="@layout/item_log" />
+
+        <include layout="@layout/item_log" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
