@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">ScheduledMessenger</string>
+    <string name="sms">SMS</string>
+    <string name="current_status_of_sms">current status of SMS</string>
+    <string name="total">Total</string>
+    <string name="sent">Sent</string>
+    <string name="pending">Pending</string>
+    <string name="failed">Failed</string>
+    <string name="upcoming_events">Upcoming events</string>
+    <string name="scheduled_sms">Scheduled SMS</string>
+    <string name="time_colon">Time:</string>
+    <string name="date_colon">Date:</string>
+    <string name="to_colon">To:</string>
+    <string name="message_colon">Message:</string>
 </resources>
