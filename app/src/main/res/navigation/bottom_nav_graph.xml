@@ -7,18 +7,18 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.scheduledmessenger.ui.home.HomeFragment"
-        android:label="HomeFragment"
+        android:label="Home"
         tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/timelineFragment"
         android:name="com.example.scheduledmessenger.ui.timeline.TimelineFragment"
-        android:label="TimelineFragment" />
+        android:label="Timeline" />
     <fragment
         android:id="@+id/logFragment"
         android:name="com.example.scheduledmessenger.ui.log.LogFragment"
-        android:label="LogFragment" />
+        android:label="Log" />
     <fragment
         android:id="@+id/settingFragment"
         android:name="com.example.scheduledmessenger.ui.setting.SettingFragment"
-        android:label="SettingFragment" />
+        android:label="Setting" />
 </navigation>

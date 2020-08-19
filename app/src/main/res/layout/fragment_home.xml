@@ -20,17 +20,6 @@
         android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!--<androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_sub_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/current_status_of_sms"
-        android:textColor="@color/colorWhite"
-        android:textSize="12sp"
-        app:layout_constraintStart_toStartOf="@+id/tv_title"
-        app:layout_constraintTop_toBottomOf="@+id/tv_title" />-->
-
-
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cv_total"
         style="@style/DashboardCards"
@@ -189,9 +178,9 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_upcoming_event_title">
 
-            <include layout="@layout/item_timeline" />
+            <include layout="@layout/item_upcoming_event" />
 
-            <include layout="@layout/item_timeline" />
+            <include layout="@layout/item_upcoming_event" />
 
         </LinearLayout>
 

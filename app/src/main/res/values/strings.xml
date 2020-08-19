@@ -12,4 +12,8 @@
     <string name="date_colon">Date:</string>
     <string name="to_colon">To:</string>
     <string name="message_colon">Message:</string>
+    <string name="home">Home</string>
+    <string name="timeline">Timeline</string>
+    <string name="log">Log</string>
+    <string name="profile">Profile</string>
 </resources>
