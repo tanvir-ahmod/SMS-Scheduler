@@ -16,4 +16,5 @@
     <string name="timeline">Timeline</string>
     <string name="log">Log</string>
     <string name="profile">Profile</string>
+    <string name="add">Add</string>
 </resources>
