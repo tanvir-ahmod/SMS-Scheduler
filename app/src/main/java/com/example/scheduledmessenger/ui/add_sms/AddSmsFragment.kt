@@ -1,6 +1,8 @@
 package com.example.scheduledmessenger.ui.add_sms
 
 import android.Manifest
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.text.Editable
@@ -15,6 +17,7 @@ import com.example.scheduledmessenger.base.BaseFragment
 import com.example.scheduledmessenger.databinding.FragmentAddSmsBinding
 import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.*
 
 @AndroidEntryPoint
 class AddSmsFragment : BaseFragment<AddSmsViewModel, FragmentAddSmsBinding>() {
@@ -62,6 +65,21 @@ class AddSmsFragment : BaseFragment<AddSmsViewModel, FragmentAddSmsBinding>() {
                 mViewBinding.chipGroupNumbers.addView(chip)
             }
         })
+
+        mViewModel.showDatePicker.observe(
+            viewLifecycleOwner, Observer { date ->
+                date?.let {
+                    showDatePicker(date)
+                }
+            })
+
+        mViewModel.showTimePicker.observe(
+            viewLifecycleOwner, Observer { date ->
+                date?.let {
+                    showTimePicker(date)
+                }
+            })
+
     }
 
     private fun initListeners() {
@@ -72,6 +90,32 @@ class AddSmsFragment : BaseFragment<AddSmsViewModel, FragmentAddSmsBinding>() {
             } else
                 gotoContactFragment()
         }
+    }
+
+    private fun showDatePicker(date: Calendar) {
+        val mDatePicker = DatePickerDialog(
+            requireContext(),
+            DatePickerDialog.OnDateSetListener { _, selectedYear, selectedMonth, selectedDay ->
+                mViewModel.changeDate(selectedYear, selectedMonth, selectedDay)
+            },
+            date.get(Calendar.YEAR),
+            date.get(Calendar.MONTH),
+            date.get(Calendar.DAY_OF_MONTH)
+        )
+        mDatePicker.show()
+    }
+
+    private fun showTimePicker(date: Calendar) {
+        val mDatePicker = TimePickerDialog(
+            requireContext(),
+            TimePickerDialog.OnTimeSetListener { _, selectedHour, selectedMinute ->
+                mViewModel.changeTime(selectedHour, selectedMinute)
+            },
+            date.get(Calendar.HOUR_OF_DAY),
+            date.get(Calendar.MINUTE),
+            false
+        )
+        mDatePicker.show()
     }
 
     private fun isGrantedReadContactPermission(): Boolean = ContextCompat.checkSelfPermission(

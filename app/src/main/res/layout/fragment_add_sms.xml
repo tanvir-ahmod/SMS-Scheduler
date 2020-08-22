@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -34,12 +35,14 @@
             android:layout_height="0dp"
             android:layout_marginStart="8dp"
             android:gravity="center"
-            android:text="12/07/2020"
+            android:onClick="@{()->viewModel.showDatePicker()}"
+            android:text="@{viewModel.selectedDateText}"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@+id/tv_date_title"
             app:layout_constraintStart_toEndOf="@+id/tv_date_title"
-            app:layout_constraintTop_toTopOf="@+id/tv_date_title" />
+            app:layout_constraintTop_toTopOf="@+id/tv_date_title"
+            tools:text="01/01/2020" />
 
 
         <com.google.android.material.textview.MaterialTextView
@@ -59,12 +62,14 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:gravity="center"
-            android:text="12.00 PM"
+            android:onClick="@{()->viewModel.showTimePicker()}"
+            android:text="@{viewModel.selectedTimeText}"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@+id/tv_time_title"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/tv_time_title" />
+            app:layout_constraintTop_toTopOf="@+id/tv_time_title"
+            tools:text="12:00 PM" />
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tv_to"
