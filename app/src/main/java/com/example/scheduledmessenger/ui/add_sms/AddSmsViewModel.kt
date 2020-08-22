@@ -14,18 +14,12 @@ class AddSmsViewModel @ViewModelInject constructor() :
     private val _receiverNumbers = MutableLiveData<List<String>>()
     val receiverNumbers: LiveData<List<String>> = _receiverNumbers
 
-    val showAddContactBtn = ObservableField<Boolean>(false)
-    val etReceiverNumber = ObservableField<String>()
-
-    fun setReceiverNumber(number: String) {
-        showAddContactBtn.set(number.isNotEmpty())
-    }
+    val etReceiverNumber = ObservableField<String>("")
 
     fun addReceiverNumber() {
         receivers.add(etReceiverNumber.get().toString())
         _receiverNumbers.value = receivers
         etReceiverNumber.set("")
-        showAddContactBtn.set(false)
     }
 
     fun removeNumber(position: Int) {

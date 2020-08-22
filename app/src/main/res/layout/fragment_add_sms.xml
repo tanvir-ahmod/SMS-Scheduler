@@ -87,7 +87,7 @@
             android:layout_marginStart="4dp"
             android:onClick="@{()-> viewModel.addReceiverNumber()}"
             android:src="@drawable/ic_add_black"
-            android:visibility="@{viewModel.showAddContactBtn ? View.VISIBLE : View.GONE}"
+            android:visibility="@{viewModel.etReceiverNumber.isEmpty() ? View.GONE : View.VISIBLE}"
             app:layout_constraintBottom_toBottomOf="@+id/tv_to"
             app:layout_constraintEnd_toStartOf="@+id/iv_show_contacts"
             app:layout_constraintStart_toEndOf="@+id/tv_to"
