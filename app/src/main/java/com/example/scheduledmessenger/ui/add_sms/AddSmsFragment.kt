@@ -3,16 +3,17 @@ package com.example.scheduledmessenger.ui.add_sms
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.*
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.scheduledmessenger.R
 import com.example.scheduledmessenger.base.BaseFragment
 import com.example.scheduledmessenger.databinding.FragmentAddSmsBinding
-import com.example.scheduledmessenger.ui.MainActivity
+import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -20,31 +21,65 @@ class AddSmsFragment : BaseFragment<AddSmsViewModel, FragmentAddSmsBinding>() {
 
 
     private val readContactPermissionCode = 100
-    private lateinit var viewDataBinding: FragmentAddSmsBinding
 
     override val mViewModel: AddSmsViewModel by viewModels()
 
     override fun getViewBinding(): FragmentAddSmsBinding =
-        FragmentAddSmsBinding.inflate(layoutInflater)
+        FragmentAddSmsBinding.inflate(layoutInflater).apply {
+            viewModel = mViewModel
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        viewDataBinding = FragmentAddSmsBinding.inflate(inflater, container, false)
-        return viewDataBinding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initListeners()
+    }
 
-        viewDataBinding.ivShowContacts.setOnClickListener {
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        setUpObservers()
+    }
+
+    private fun setUpObservers() {
+        mViewModel.receiverNumbers.observe(viewLifecycleOwner, Observer { numbers ->
+
+            mViewBinding.chipGroupNumbers.removeAllViews()
+
+            for ((position, number) in numbers.withIndex()) {
+                val chip = layoutInflater.inflate(
+                    R.layout.chip_view,
+                    mViewBinding.chipGroupNumbers,
+                    false
+                ) as Chip
+                chip.text = number
+                chip.setOnCloseIconClickListener {
+                    mViewModel.removeNumber(position)
+                }
+                mViewBinding.chipGroupNumbers.addView(chip)
+            }
+        })
+    }
+
+    private fun initListeners() {
+
+        mViewBinding.tvTo.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {
+
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                mViewModel.setReceiverNumber(p0.toString())
+            }
+        })
+
+        mViewBinding.ivShowContacts.setOnClickListener {
             if (isGrantedReadContactPermission()) {
                 requestReadContactPermission()
             } else
