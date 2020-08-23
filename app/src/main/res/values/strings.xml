@@ -17,4 +17,5 @@
     <string name="log">Log</string>
     <string name="profile">Profile</string>
     <string name="add">Add</string>
+    <string name="error_empty">Field must not be empty</string>
 </resources>

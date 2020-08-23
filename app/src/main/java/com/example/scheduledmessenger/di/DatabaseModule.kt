@@ -27,4 +27,8 @@ object DatabaseModule {
     @Provides
     fun provideEventsDao(database: ScheduleMessengerDatabase) = database.eventsDao()
 
+    @Singleton
+    @Provides
+    fun provideSmsDao(database: ScheduleMessengerDatabase) = database.smsDao()
+
 }

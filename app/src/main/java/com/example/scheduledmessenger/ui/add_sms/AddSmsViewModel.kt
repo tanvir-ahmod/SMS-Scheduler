@@ -1,26 +1,43 @@
 package com.example.scheduledmessenger.ui.add_sms
 
+import android.content.Context
+import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.switchMap
+import androidx.lifecycle.viewModelScope
+import com.example.scheduledmessenger.R
 import com.example.scheduledmessenger.base.BaseViewModel
+import com.example.scheduledmessenger.data.source.local.db_models.SMS
+import com.example.scheduledmessenger.data.source.ScheduleRepository
+import com.example.scheduledmessenger.data.source.local.db_models.Event
+import com.example.scheduledmessenger.utils.Constants
 import com.example.scheduledmessenger.utils.Utils
+import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.collections.ArrayList
 
-class AddSmsViewModel @ViewModelInject constructor() :
+class AddSmsViewModel @ViewModelInject constructor(
+    @ApplicationContext private val context: Context,
+    private val scheduleRepository: ScheduleRepository
+) :
     BaseViewModel() {
 
     val etReceiverNumber = ObservableField<String>("")
     private val selectDate = Calendar.getInstance()
     private val receivers: ArrayList<String> = arrayListOf()
 
-    var selectedDateText =
+    val selectedDateText =
         ObservableField<String>(Utils.dateFormatter.format(selectDate.time).toString())
-    var selectedTimeText =
+    val selectedTimeText =
         ObservableField<String>(Utils.timeFormatter.format(selectDate.time).toString())
+
+    val message = ObservableField<String>()
+    val messageError = ObservableField<String>()
+    val receiverError = ObservableField<String>()
 
     private val _receiverNumbers = MutableLiveData<List<String>>()
     val receiverNumbers: LiveData<List<String>> = _receiverNumbers
@@ -35,10 +52,10 @@ class AddSmsViewModel @ViewModelInject constructor() :
 
     private val _showTimePicker = MutableLiveData<Boolean>(false)
     val showTimePicker: LiveData<Calendar> = _showTimePicker.switchMap { isShow ->
-        val datePicker = MutableLiveData<Calendar>(null)
+        val timePicker = MutableLiveData<Calendar>(null)
         if (isShow)
-            datePicker.value = selectDate
-        return@switchMap datePicker
+            timePicker.value = selectDate
+        return@switchMap timePicker
     }
 
     fun addReceiverNumber() {
@@ -75,4 +92,36 @@ class AddSmsViewModel @ViewModelInject constructor() :
         _showTimePicker.value = false
     }
 
+    fun addSMS() {
+        if (validateInput()) {
+            viewModelScope.launch {
+                showLoader.value = true
+                val eventID = scheduleRepository.insertEvent(Event(status = Constants.PENDING))
+                Log.d("event", "event ID $eventID")
+
+                showLoader.value = false
+            }
+        }
+
+    }
+
+    private fun validateInput(): Boolean {
+        var isOkay = true
+        hideAllError()
+        if (receivers.isEmpty()) {
+            receiverError.set(context.getString(R.string.error_empty))
+            isOkay = false
+        }
+
+        if (message.get().isNullOrEmpty()) {
+            messageError.set(context.getString(R.string.error_empty))
+            isOkay = false
+        }
+        return isOkay
+    }
+
+    private fun hideAllError() {
+        receiverError.set(null)
+        messageError.set(null)
+    }
 }
