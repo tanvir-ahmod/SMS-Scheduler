@@ -9,7 +9,7 @@ interface EventsDao {
     @Insert
     fun insertEvent(event: Event): Long
 
-   suspend fun insertEventWithTimeStamp(event: Event) = insertEvent(event.apply {
+   suspend fun insertEventWithTimeStamp(event: Event) : Long = insertEvent(event.apply {
         createdAt = System.currentTimeMillis()
         updatedAt = System.currentTimeMillis()
     })

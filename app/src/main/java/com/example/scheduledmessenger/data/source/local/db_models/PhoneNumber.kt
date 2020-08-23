@@ -9,25 +9,23 @@ import androidx.room.ForeignKey.CASCADE
 
 @Entity(
     foreignKeys = [ForeignKey(
-        entity = Event::class,
+        entity = SMS::class,
         parentColumns = ["id"],
-        childColumns = ["event_id"],
+        childColumns = ["sms_id"],
         onDelete = CASCADE
     )]
 )
-data class Log(
+data class PhoneNumber(
     @PrimaryKey(autoGenerate = true)
-    var id: Int,
-
-    @ColumnInfo(name = "event_id")
-    var eventID: Int,
-
-    @ColumnInfo(name = "log_message")
-    var logMessage: String,
+    var id: Int = 0,
+    @ColumnInfo(name = "phone_number")
+    val phoneNumber: String,
+    @ColumnInfo(name = "sms_id")
+    val smsID: Int,
 
     @ColumnInfo(name = "created_at")
-    val createdAt: Long,
+    var createdAt: Long = System.currentTimeMillis(),
 
     @ColumnInfo(name = "updated_at")
-    val updatedAt: Long
+    var updatedAt: Long = System.currentTimeMillis()
 )

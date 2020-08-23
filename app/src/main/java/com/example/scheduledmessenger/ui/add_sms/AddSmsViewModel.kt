@@ -13,6 +13,8 @@ import com.example.scheduledmessenger.base.BaseViewModel
 import com.example.scheduledmessenger.data.source.local.db_models.SMS
 import com.example.scheduledmessenger.data.source.ScheduleRepository
 import com.example.scheduledmessenger.data.source.local.db_models.Event
+import com.example.scheduledmessenger.data.source.local.db_models.PhoneNumber
+import com.example.scheduledmessenger.data.source.local.db_models.EventLog
 import com.example.scheduledmessenger.utils.Constants
 import com.example.scheduledmessenger.utils.Utils
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -97,7 +99,28 @@ class AddSmsViewModel @ViewModelInject constructor(
             viewModelScope.launch {
                 showLoader.value = true
                 val eventID = scheduleRepository.insertEvent(Event(status = Constants.PENDING))
-                Log.d("event", "event ID $eventID")
+                val smsID = scheduleRepository.insertSMS(
+                    SMS(
+                        eventID = eventID.toInt(),
+                        message = message.get().toString()
+                    )
+                )
+
+                val logID = scheduleRepository.insertLog(
+                    EventLog(
+                        logStatus = Constants.SMS_INITIATED,
+                        eventID = eventID.toInt()
+                    )
+                )
+
+                val phoneNumbers = arrayListOf<PhoneNumber>()
+                for (number in receivers) {
+                    phoneNumbers.add(PhoneNumber(phoneNumber = number, smsID = smsID.toInt()))
+                }
+
+                scheduleRepository.insertPhoneNumbers(phoneNumbers)
+
+                Log.d("status", "eventID $eventID smsID $smsID logID $logID")
 
                 showLoader.value = false
             }

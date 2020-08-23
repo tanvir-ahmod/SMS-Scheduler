@@ -16,8 +16,8 @@ data class Event(
     var status: Int,
 
     @ColumnInfo(name = "created_at")
-    var createdAt: Long = 0,
+    var createdAt: Long = System.currentTimeMillis(),
 
     @ColumnInfo(name = "updated_at")
-    var updatedAt: Long = 0
+    var updatedAt: Long = System.currentTimeMillis()
 )

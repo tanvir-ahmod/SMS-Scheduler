@@ -14,18 +14,18 @@ import androidx.room.PrimaryKey
 )
 data class SMS(
     @PrimaryKey(autoGenerate = true)
-    var id: Int,
+    var id: Int = 0,
 
     @ColumnInfo(name = "event_id")
-    val eventID: Int,
+    var eventID: Int,
 
     @ColumnInfo(name = "message")
-    val message: String,
+    var message: String,
 
     @ColumnInfo(name = "created_at")
-    val createdAt: Long,
+    var createdAt: Long = System.currentTimeMillis(),
 
     @ColumnInfo(name = "updated_at")
-    val updatedAt: Long
+    var updatedAt: Long = System.currentTimeMillis()
 )
 

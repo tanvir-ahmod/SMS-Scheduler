@@ -16,5 +16,10 @@ interface SmsDao {
     @Insert
     fun insertSingleSMS(sms: SMS): Long
 
+    suspend fun insertSmsWithTimeStamp(sms: SMS) : Long = insertSingleSMS(sms.apply {
+        createdAt = System.currentTimeMillis()
+        updatedAt = System.currentTimeMillis()
+    })
+
 
 }
