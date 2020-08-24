@@ -5,18 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.home.HomeFragment">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <include layout="@layout/item_log" />
-
-        <include layout="@layout/item_log" />
-
-        <include layout="@layout/item_log" />
-
-    </LinearLayout>
+<androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/rv_logs"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

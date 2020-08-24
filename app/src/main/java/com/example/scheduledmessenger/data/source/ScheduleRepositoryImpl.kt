@@ -31,6 +31,9 @@ class ScheduleRepositoryImpl @Inject constructor(
     override fun getSmsAndPhoneNumbers(): Flow<List<SmsAndPhoneNumbers>> =
         eventsDataSource.getSmsAndPhoneNumbers()
 
-    override fun getEventWithSmsAndPhoneNumbers(): Flow<List<EventWithSmsAndPhoneNumbers>> = eventsDataSource.getEventWithSmsAndPhoneNumbers()
+    override fun getEventWithSmsAndPhoneNumbers(): Flow<List<EventWithSmsAndPhoneNumbers>> =
+        eventsDataSource.getEventWithSmsAndPhoneNumbers()
+
+    override fun getAllLogs(): Flow<List<EventLog>> = eventsDataSource.getAllLogs()
 
 }

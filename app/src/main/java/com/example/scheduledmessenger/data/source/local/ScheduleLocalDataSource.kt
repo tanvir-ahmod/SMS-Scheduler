@@ -32,4 +32,6 @@ class ScheduleLocalDataSource @Inject constructor(
     fun getSmsAndPhoneNumbers() = smsDao.getSmsAndPhoneNumbers()
 
     fun getEventWithSmsAndPhoneNumbers() = eventsDao.getEventWithSmsAndPhoneNumbers()
+
+    fun getAllLogs() = eventLogsDao.getAllLogs()
 }

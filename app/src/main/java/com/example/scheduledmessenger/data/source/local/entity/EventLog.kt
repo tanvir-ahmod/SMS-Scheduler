@@ -3,9 +3,8 @@ package com.example.scheduledmessenger.data.source.local.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
-import androidx.room.PrimaryKey
-
 import androidx.room.ForeignKey.CASCADE
+import androidx.room.PrimaryKey
 
 @Entity(
     foreignKeys = [ForeignKey(
@@ -25,9 +24,7 @@ data class EventLog(
     @ColumnInfo(name = "log_message")
     var logStatus: Int,
 
-    @ColumnInfo(name = "created_at")
-    var createdAt: Long = System.currentTimeMillis(),
+    @ColumnInfo(name = "timestamp")
+    var timestamp: Long = System.currentTimeMillis()
 
-    @ColumnInfo(name = "updated_at")
-    var updatedAt: Long = System.currentTimeMillis()
 )

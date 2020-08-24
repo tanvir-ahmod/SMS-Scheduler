@@ -12,4 +12,5 @@ interface ScheduleRepository {
     suspend fun insertLog(eventLog: EventLog) : Long
     fun getSmsAndPhoneNumbers(): Flow<List<SmsAndPhoneNumbers>>
     fun getEventWithSmsAndPhoneNumbers(): Flow<List<EventWithSmsAndPhoneNumbers>>
+    fun getAllLogs():  Flow<List<EventLog>>
 }
