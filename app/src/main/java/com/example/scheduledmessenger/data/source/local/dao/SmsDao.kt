@@ -3,9 +3,10 @@ package com.example.scheduledmessenger.data.source.local.dao
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import com.example.scheduledmessenger.data.source.local.db_models.SMS
+import androidx.room.Transaction
+import com.example.scheduledmessenger.data.source.local.entity.SMS
+import com.example.scheduledmessenger.data.source.local.entity.SmsAndPhoneNumbers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 
 @Dao
 interface SmsDao {
@@ -16,10 +17,14 @@ interface SmsDao {
     @Insert
     fun insertSingleSMS(sms: SMS): Long
 
-    suspend fun insertSmsWithTimeStamp(sms: SMS) : Long = insertSingleSMS(sms.apply {
+    suspend fun insertSmsWithTimeStamp(sms: SMS): Long = insertSingleSMS(sms.apply {
         createdAt = System.currentTimeMillis()
         updatedAt = System.currentTimeMillis()
     })
+
+    @Transaction
+    @Query("SELECT * FROM SMSs")
+    fun getSmsAndPhoneNumbers(): Flow<List<SmsAndPhoneNumbers>>
 
 
 }

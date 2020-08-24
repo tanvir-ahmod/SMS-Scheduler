@@ -2,7 +2,7 @@ package com.example.scheduledmessenger.data.source.local.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
-import com.example.scheduledmessenger.data.source.local.db_models.EventLog
+import com.example.scheduledmessenger.data.source.local.entity.EventLog
 
 @Dao
 interface EventLogsDao {

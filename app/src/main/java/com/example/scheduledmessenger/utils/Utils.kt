@@ -5,5 +5,6 @@ import java.util.*
 
 object Utils {
     val dateFormatter = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH)
+    val timelineDateFormatter = SimpleDateFormat("dd MMM, yyyy", Locale.ENGLISH)
     val timeFormatter = SimpleDateFormat("hh:mm a", Locale.ENGLISH)
 }

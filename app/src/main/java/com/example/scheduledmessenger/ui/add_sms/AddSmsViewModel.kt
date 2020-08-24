@@ -10,11 +10,11 @@ import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import com.example.scheduledmessenger.R
 import com.example.scheduledmessenger.base.BaseViewModel
-import com.example.scheduledmessenger.data.source.local.db_models.SMS
+import com.example.scheduledmessenger.data.source.local.entity.SMS
 import com.example.scheduledmessenger.data.source.ScheduleRepository
-import com.example.scheduledmessenger.data.source.local.db_models.Event
-import com.example.scheduledmessenger.data.source.local.db_models.PhoneNumber
-import com.example.scheduledmessenger.data.source.local.db_models.EventLog
+import com.example.scheduledmessenger.data.source.local.entity.Event
+import com.example.scheduledmessenger.data.source.local.entity.PhoneNumber
+import com.example.scheduledmessenger.data.source.local.entity.EventLog
 import com.example.scheduledmessenger.utils.Constants
 import com.example.scheduledmessenger.utils.Utils
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -98,7 +98,12 @@ class AddSmsViewModel @ViewModelInject constructor(
         if (validateInput()) {
             viewModelScope.launch {
                 showLoader.value = true
-                val eventID = scheduleRepository.insertEvent(Event(status = Constants.PENDING))
+                val eventID = scheduleRepository.insertEvent(
+                    Event(
+                        status = Constants.PENDING,
+                        timestamp = selectDate.timeInMillis
+                    )
+                )
                 val smsID = scheduleRepository.insertSMS(
                     SMS(
                         eventID = eventID.toInt(),

@@ -6,10 +6,10 @@ import com.example.scheduledmessenger.data.source.local.dao.EventsDao
 import com.example.scheduledmessenger.data.source.local.dao.EventLogsDao
 import com.example.scheduledmessenger.data.source.local.dao.PhoneNumbersDao
 import com.example.scheduledmessenger.data.source.local.dao.SmsDao
-import com.example.scheduledmessenger.data.source.local.db_models.Event
-import com.example.scheduledmessenger.data.source.local.db_models.EventLog
-import com.example.scheduledmessenger.data.source.local.db_models.PhoneNumber
-import com.example.scheduledmessenger.data.source.local.db_models.SMS
+import com.example.scheduledmessenger.data.source.local.entity.Event
+import com.example.scheduledmessenger.data.source.local.entity.EventLog
+import com.example.scheduledmessenger.data.source.local.entity.PhoneNumber
+import com.example.scheduledmessenger.data.source.local.entity.SMS
 
 @Database(
     entities = [Event::class, SMS::class, PhoneNumber::class, EventLog::class],

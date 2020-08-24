@@ -2,7 +2,11 @@ package com.example.scheduledmessenger.data.source.local.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
-import com.example.scheduledmessenger.data.source.local.db_models.Event
+import androidx.room.Query
+import androidx.room.Transaction
+import com.example.scheduledmessenger.data.source.local.entity.Event
+import com.example.scheduledmessenger.data.source.local.entity.EventWithSmsAndPhoneNumbers
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface EventsDao {
@@ -13,4 +17,9 @@ interface EventsDao {
         createdAt = System.currentTimeMillis()
         updatedAt = System.currentTimeMillis()
     })
+
+
+    @Transaction
+    @Query("SELECT * FROM EVENTS")
+    fun getEventWithSmsAndPhoneNumbers(): Flow<List<EventWithSmsAndPhoneNumbers>>
 }

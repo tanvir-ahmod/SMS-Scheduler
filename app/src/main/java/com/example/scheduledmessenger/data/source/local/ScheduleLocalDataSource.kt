@@ -4,10 +4,10 @@ import com.example.scheduledmessenger.data.source.local.dao.EventsDao
 import com.example.scheduledmessenger.data.source.local.dao.EventLogsDao
 import com.example.scheduledmessenger.data.source.local.dao.PhoneNumbersDao
 import com.example.scheduledmessenger.data.source.local.dao.SmsDao
-import com.example.scheduledmessenger.data.source.local.db_models.Event
-import com.example.scheduledmessenger.data.source.local.db_models.EventLog
-import com.example.scheduledmessenger.data.source.local.db_models.PhoneNumber
-import com.example.scheduledmessenger.data.source.local.db_models.SMS
+import com.example.scheduledmessenger.data.source.local.entity.Event
+import com.example.scheduledmessenger.data.source.local.entity.EventLog
+import com.example.scheduledmessenger.data.source.local.entity.PhoneNumber
+import com.example.scheduledmessenger.data.source.local.entity.SMS
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
@@ -28,4 +28,8 @@ class ScheduleLocalDataSource @Inject constructor(
     suspend fun insertPhoneNumbers(phoneNumbers: List<PhoneNumber>) = phoneNumbersDao.insertSinglePhoneNumbers(phoneNumbers)
 
     suspend fun insertLog(eventLog: EventLog) = eventLogsDao.insertLogWithTimeStamp(eventLog)
+
+    fun getSmsAndPhoneNumbers() = smsDao.getSmsAndPhoneNumbers()
+
+    fun getEventWithSmsAndPhoneNumbers() = eventsDao.getEventWithSmsAndPhoneNumbers()
 }

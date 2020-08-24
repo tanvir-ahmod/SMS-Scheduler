@@ -1,4 +1,4 @@
-package com.example.scheduledmessenger.data.source.local.db_models
+package com.example.scheduledmessenger.data.source.local.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

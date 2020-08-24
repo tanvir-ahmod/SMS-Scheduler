@@ -1,12 +1,10 @@
 package com.example.scheduledmessenger.data.source
 
-import com.example.scheduledmessenger.data.source.local.db_models.SMS
 import com.example.scheduledmessenger.data.source.local.ScheduleLocalDataSource
-import com.example.scheduledmessenger.data.source.local.db_models.Event
-import com.example.scheduledmessenger.data.source.local.db_models.EventLog
-import com.example.scheduledmessenger.data.source.local.db_models.PhoneNumber
+import com.example.scheduledmessenger.data.source.local.entity.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -29,4 +27,10 @@ class ScheduleRepositoryImpl @Inject constructor(
 
     override suspend fun insertLog(eventLog: EventLog): Long =
         withContext(Dispatchers.IO) { eventsDataSource.insertLog(eventLog) }
+
+    override fun getSmsAndPhoneNumbers(): Flow<List<SmsAndPhoneNumbers>> =
+        eventsDataSource.getSmsAndPhoneNumbers()
+
+    override fun getEventWithSmsAndPhoneNumbers(): Flow<List<EventWithSmsAndPhoneNumbers>> = eventsDataSource.getEventWithSmsAndPhoneNumbers()
+
 }
