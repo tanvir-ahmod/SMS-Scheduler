@@ -1,13 +1,9 @@
 package com.example.scheduledmessenger.data.source.local.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Transaction
+import androidx.room.*
 import com.example.scheduledmessenger.data.source.local.entity.Event
 import com.example.scheduledmessenger.data.source.local.entity.EventWithSmsAndPhoneNumbers
 import kotlinx.coroutines.flow.Flow
-import java.sql.Timestamp
 
 @Dao
 interface EventsDao {
@@ -18,6 +14,16 @@ interface EventsDao {
         createdAt = System.currentTimeMillis()
         updatedAt = System.currentTimeMillis()
     })
+
+    @Update
+    suspend fun updateEvent(event: Event): Int
+
+    suspend fun updateEventWithTimeStamp(event: Event): Int = updateEvent(event.apply {
+        updatedAt = System.currentTimeMillis()
+    })
+
+    @Query("SELECT * FROM EVENTS WHERE id = :id")
+    fun getEventById(id: Int): Event
 
 
     @Transaction

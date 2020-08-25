@@ -1,7 +1,6 @@
 package com.example.scheduledmessenger.ui.add_sms
 
 import android.content.Context
-import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
@@ -10,21 +9,22 @@ import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import com.example.scheduledmessenger.R
 import com.example.scheduledmessenger.base.BaseViewModel
-import com.example.scheduledmessenger.data.source.local.entity.SMS
 import com.example.scheduledmessenger.data.source.ScheduleRepository
 import com.example.scheduledmessenger.data.source.local.entity.Event
-import com.example.scheduledmessenger.data.source.local.entity.PhoneNumber
 import com.example.scheduledmessenger.data.source.local.entity.EventLog
+import com.example.scheduledmessenger.data.source.local.entity.PhoneNumber
+import com.example.scheduledmessenger.data.source.local.entity.SMS
 import com.example.scheduledmessenger.utils.Constants
+import com.example.scheduledmessenger.utils.ManagerAlarm
 import com.example.scheduledmessenger.utils.Utils
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
 import java.util.*
-import kotlin.collections.ArrayList
 
 class AddSmsViewModel @ViewModelInject constructor(
     @ApplicationContext private val context: Context,
-    private val scheduleRepository: ScheduleRepository
+    private val scheduleRepository: ScheduleRepository,
+    private val alarmManager: ManagerAlarm
 ) :
     BaseViewModel() {
 
@@ -104,20 +104,15 @@ class AddSmsViewModel @ViewModelInject constructor(
                         timestamp = selectDate.timeInMillis
                     )
                 )
+
+                alarmManager.setAlarm(eventID.toInt(), selectDate.timeInMillis)
+
                 val smsID = scheduleRepository.insertSMS(
                     SMS(
                         eventID = eventID.toInt(),
                         message = message.get().toString()
                     )
                 )
-
-                val logID = scheduleRepository.insertLog(
-                    EventLog(
-                        logStatus = Constants.SMS_INITIATED,
-                        eventID = eventID.toInt()
-                    )
-                )
-
                 val phoneNumbers = arrayListOf<PhoneNumber>()
                 for (number in receivers) {
                     phoneNumbers.add(PhoneNumber(phoneNumber = number, smsID = smsID.toInt()))
@@ -125,7 +120,13 @@ class AddSmsViewModel @ViewModelInject constructor(
 
                 scheduleRepository.insertPhoneNumbers(phoneNumbers)
 
-                Log.d("status", "eventID $eventID smsID $smsID logID $logID")
+                scheduleRepository.insertLog(
+                    EventLog(
+                        logStatus = Constants.SMS_INITIATED,
+                        eventID = eventID.toInt()
+                    )
+                )
+
 
                 showLoader.value = false
             }

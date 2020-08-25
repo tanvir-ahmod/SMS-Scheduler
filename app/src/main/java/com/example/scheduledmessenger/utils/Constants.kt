@@ -2,6 +2,7 @@ package com.example.scheduledmessenger.utils
 
 
 object Constants {
+    const val ID = "id"
     const val PENDING = 0
     const val SENT = 1
     const val FAILED = 2

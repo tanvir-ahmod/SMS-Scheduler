@@ -15,4 +15,6 @@ interface ScheduleRepository {
     fun getEventWithSmsAndPhoneNumbers(): Flow<List<EventWithSmsAndPhoneNumbers>>
     fun getUpcomingSMSEvents(timestamp : Long) : Flow<List<EventWithSmsAndPhoneNumbers>>
     fun getAllLogs():  Flow<List<EventLog>>
+    suspend fun updateEvent(event: Event) : Int
+    fun getEventById(id: Int) : Event
 }
