@@ -4,7 +4,6 @@ import com.example.scheduledmessenger.data.source.local.ScheduleLocalDataSource
 import com.example.scheduledmessenger.data.source.local.entity.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -13,6 +12,9 @@ class ScheduleRepositoryImpl @Inject constructor(
 ) :
     ScheduleRepository {
     override fun getTotalSMS(): Flow<Int> = eventsDataSource.getTotalSms()
+
+    override fun getSMSsWithStatus(status : Int): Flow<Int> = eventsDataSource.getSMSsWithStatus(status)
+
     override suspend fun insertSMS(sms: SMS): Long =
         withContext(Dispatchers.IO) { eventsDataSource.insertSMS(sms) }
 
@@ -33,6 +35,8 @@ class ScheduleRepositoryImpl @Inject constructor(
 
     override fun getEventWithSmsAndPhoneNumbers(): Flow<List<EventWithSmsAndPhoneNumbers>> =
         eventsDataSource.getEventWithSmsAndPhoneNumbers()
+
+    override fun getUpcomingSMSEvents(timestamp: Long): Flow<List<EventWithSmsAndPhoneNumbers>> = eventsDataSource.getUpcomingSMSEvents(timestamp)
 
     override fun getAllLogs(): Flow<List<EventLog>> = eventsDataSource.getAllLogs()
 

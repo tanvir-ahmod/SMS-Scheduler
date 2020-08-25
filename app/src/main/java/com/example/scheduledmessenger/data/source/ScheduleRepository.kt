@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface ScheduleRepository {
     fun getTotalSMS(): Flow<Int>
+    fun getSMSsWithStatus(status : Int): Flow<Int>
     suspend fun insertSMS(sms : SMS) : Long
     suspend fun insertEvent(event: Event) : Long
     suspend fun insertPhoneNumber(phoneNumber: PhoneNumber) : Long
@@ -12,5 +13,6 @@ interface ScheduleRepository {
     suspend fun insertLog(eventLog: EventLog) : Long
     fun getSmsAndPhoneNumbers(): Flow<List<SmsAndPhoneNumbers>>
     fun getEventWithSmsAndPhoneNumbers(): Flow<List<EventWithSmsAndPhoneNumbers>>
+    fun getUpcomingSMSEvents(timestamp : Long) : Flow<List<EventWithSmsAndPhoneNumbers>>
     fun getAllLogs():  Flow<List<EventLog>>
 }

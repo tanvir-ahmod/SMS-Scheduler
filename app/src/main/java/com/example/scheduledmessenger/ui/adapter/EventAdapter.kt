@@ -1,4 +1,4 @@
-package com.example.scheduledmessenger.ui.timeline
+package com.example.scheduledmessenger.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,8 +8,8 @@ import com.example.scheduledmessenger.databinding.ItemTimelineBinding
 import com.example.scheduledmessenger.utils.Utils
 import java.lang.StringBuilder
 
-class TimelineAdapter :
-    RecyclerView.Adapter<TimelineAdapter.TimeLineHolder>() {
+class EventAdapter :
+    RecyclerView.Adapter<EventAdapter.TimeLineHolder>() {
 
     private var eventWithSmsAndPhoneNumbers: List<EventWithSmsAndPhoneNumbers> = arrayListOf()
 
@@ -33,7 +33,9 @@ class TimelineAdapter :
 
         val binding =
             ItemTimelineBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return TimeLineHolder(binding)
+        return TimeLineHolder(
+            binding
+        )
     }
 
     override fun getItemCount(): Int = eventWithSmsAndPhoneNumbers.size

@@ -34,11 +34,12 @@
             android:orientation="vertical">
 
             <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_total_sms"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0"
                 android:textColor="@color/colorBlack"
-                android:textSize="24sp" />
+                android:textSize="24sp"
+                tools:text="0" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="wrap_content"
@@ -66,11 +67,12 @@
             android:orientation="vertical">
 
             <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_sent_sms"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0"
                 android:textColor="@color/colorBlack"
-                android:textSize="24sp" />
+                android:textSize="24sp"
+                tools:text="0" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="wrap_content"
@@ -98,11 +100,12 @@
             android:orientation="vertical">
 
             <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_pending_sms"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0"
                 android:textColor="@color/colorBlack"
-                android:textSize="24sp" />
+                android:textSize="24sp"
+                tools:text="0" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="wrap_content"
@@ -131,11 +134,12 @@
             android:orientation="vertical">
 
             <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_failed_sms"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0"
                 android:textColor="@color/colorBlack"
-                android:textSize="24sp" />
+                android:textSize="24sp"
+                tools:text="0" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="wrap_content"
@@ -170,19 +174,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <LinearLayout
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_upcoming_events"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="10dp"
-            android:orientation="vertical"
+            android:layout_marginTop="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_upcoming_event_title">
-
-            <include layout="@layout/item_upcoming_event" />
-
-            <include layout="@layout/item_upcoming_event" />
-
-        </LinearLayout>
+            app:layout_constraintTop_toBottomOf="@+id/tv_upcoming_event_title" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

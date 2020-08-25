@@ -29,12 +29,9 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
         setContentView(mViewBinding.root)
         setupViews()
 
-        mViewModel.totalSms.observe(this, Observer { totalSms ->
-            Log.d("Total SMS", "total : $totalSms")
-        })
     }
 
-    fun setupViews()
+    private fun setupViews()
     {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragNavHost) as NavHostFragment
         navController = navHostFragment.navController

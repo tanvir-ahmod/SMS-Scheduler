@@ -2,19 +2,20 @@ package com.example.scheduledmessenger.ui.timeline
 
 import android.os.Bundle
 import android.view.View
-import android.widget.LinearLayout
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.scheduledmessenger.base.BaseFragment
 import com.example.scheduledmessenger.databinding.FragmentTimelineBinding
+import com.example.scheduledmessenger.ui.adapter.EventAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class TimelineFragment : BaseFragment<TimelineViewModel, FragmentTimelineBinding>() {
     override val mViewModel: TimelineViewModel by viewModels()
 
-    val timelineAdapter = TimelineAdapter()
+    private val timelineAdapter =
+        EventAdapter()
 
     override fun getViewBinding(): FragmentTimelineBinding =
         FragmentTimelineBinding.inflate(layoutInflater)

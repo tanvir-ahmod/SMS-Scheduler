@@ -19,19 +19,25 @@ class ScheduleLocalDataSource @Inject constructor(
 ) {
     fun getTotalSms(): Flow<Int> = smsDao.getTotalSMSs()
 
+    fun getSMSsWithStatus(status: Int): Flow<Int> = eventsDao.getSMSsWithStatus(status)
+
     suspend fun insertSMS(sms: SMS): Long = smsDao.insertSmsWithTimeStamp(sms)
 
     suspend fun insertEvent(event: Event) = eventsDao.insertEventWithTimeStamp(event)
 
-    suspend fun insertPhoneNumber(phoneNumber: PhoneNumber) = phoneNumbersDao.insertSmsWithTimeStamp(phoneNumber)
+    suspend fun insertPhoneNumber(phoneNumber: PhoneNumber) =
+        phoneNumbersDao.insertSmsWithTimeStamp(phoneNumber)
 
-    suspend fun insertPhoneNumbers(phoneNumbers: List<PhoneNumber>) = phoneNumbersDao.insertSinglePhoneNumbers(phoneNumbers)
+    suspend fun insertPhoneNumbers(phoneNumbers: List<PhoneNumber>) =
+        phoneNumbersDao.insertSinglePhoneNumbers(phoneNumbers)
 
     suspend fun insertLog(eventLog: EventLog) = eventLogsDao.insertLogWithTimeStamp(eventLog)
 
     fun getSmsAndPhoneNumbers() = smsDao.getSmsAndPhoneNumbers()
 
     fun getEventWithSmsAndPhoneNumbers() = eventsDao.getEventWithSmsAndPhoneNumbers()
+
+    fun getUpcomingSMSEvents(timestamp : Long) = eventsDao.getUpcomingSMSEvents(timestamp)
 
     fun getAllLogs() = eventLogsDao.getAllLogs()
 }
