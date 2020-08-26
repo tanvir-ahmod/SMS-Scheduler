@@ -5,7 +5,6 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -85,10 +84,19 @@ class AddSmsFragment : BaseFragment<AddSmsViewModel, FragmentAddSmsBinding>() {
                 }
             })
 
-        sharedViewModel.contactNumber.observe(viewLifecycleOwner, Observer {phoneNumber->
+        mViewModel.popBack.observe(
+            viewLifecycleOwner, Observer { date ->
+                date?.let { isPopBack ->
+                    if (isPopBack) {
+                        hideKeyboard(requireContext(), mViewBinding.root)
+                        findNavController().navigateUp()
+                    }
+                }
+            })
+
+        sharedViewModel.contactNumber.observe(viewLifecycleOwner, Observer { phoneNumber ->
             mViewModel.etReceiverNumber.set(phoneNumber)
         })
-
     }
 
     private fun initListeners() {
@@ -151,7 +159,7 @@ class AddSmsFragment : BaseFragment<AddSmsViewModel, FragmentAddSmsBinding>() {
             ) {
                 gotoContactFragment()
             } else {
-                mViewModel.showErrorMessage.value = "Contact permission required"
+                mViewModel.showMessage.value = "Contact permission required"
             }
         }
     }
@@ -170,9 +178,12 @@ class AddSmsFragment : BaseFragment<AddSmsViewModel, FragmentAddSmsBinding>() {
                 mViewModel.addSMS()
                 true
             }
-
             else -> super.onOptionsItemSelected(item)
         }
     }
 
+    override fun onDestroy() {
+        sharedViewModel.contactNumber.value = ""
+        super.onDestroy()
+    }
 }

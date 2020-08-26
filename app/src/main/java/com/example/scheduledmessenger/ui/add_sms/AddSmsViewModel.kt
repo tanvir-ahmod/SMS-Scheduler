@@ -31,7 +31,6 @@ class AddSmsViewModel @ViewModelInject constructor(
     val etReceiverNumber = ObservableField<String>("")
     private val selectDate = Calendar.getInstance()
     private val receivers: ArrayList<String> = arrayListOf()
-
     val selectedDateText =
         ObservableField<String>(Utils.dateFormatter.format(selectDate.time).toString())
     val selectedTimeText =
@@ -40,6 +39,10 @@ class AddSmsViewModel @ViewModelInject constructor(
     val message = ObservableField<String>()
     val messageError = ObservableField<String>()
     val receiverError = ObservableField<String>()
+
+    private val _popBack = MutableLiveData<Boolean>(false)
+    val popBack: LiveData<Boolean> = _popBack
+
 
     private val _receiverNumbers = MutableLiveData<List<String>>()
     val receiverNumbers: LiveData<List<String>> = _receiverNumbers
@@ -61,6 +64,7 @@ class AddSmsViewModel @ViewModelInject constructor(
     }
 
     fun addReceiverNumber() {
+        hideAllError()
         receivers.add(etReceiverNumber.get().toString())
         _receiverNumbers.value = receivers
         etReceiverNumber.set("")
@@ -127,11 +131,11 @@ class AddSmsViewModel @ViewModelInject constructor(
                     )
                 )
 
-
                 showLoader.value = false
+                showMessage.value = "Event Added"
+                _popBack.value = true
             }
         }
-
     }
 
     private fun validateInput(): Boolean {
