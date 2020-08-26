@@ -16,7 +16,7 @@ class ManagerAlarm @Inject constructor(@ApplicationContext private val context: 
     fun setAlarm(id: Int, timestamp: Long) {
 
 
-        alarmIntent = Intent(context, AlarmReceiver::class.java).let { intent ->
+        alarmIntent = Intent(context, AlarmBroadCastReceiver::class.java).let { intent ->
             intent.putExtra(Constants.ID, id)
             PendingIntent.getBroadcast(context, id, intent, 0)
         }

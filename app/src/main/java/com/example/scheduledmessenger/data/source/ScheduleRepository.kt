@@ -17,4 +17,5 @@ interface ScheduleRepository {
     fun getAllLogs():  Flow<List<EventLog>>
     suspend fun updateEvent(event: Event) : Int
     fun getEventById(id: Int) : Event
+    fun getUpcomingEvents(timestamp: Long) : List<Event>
 }

@@ -25,6 +25,9 @@ interface EventsDao {
     @Query("SELECT * FROM EVENTS WHERE id = :id")
     fun getEventById(id: Int): Event
 
+    @Query("SELECT * FROM EVENTS WHERE timestamp > :timestamp")
+    fun getUpcomingEvents(timestamp: Long): List<Event>
+
 
     @Transaction
     @Query("SELECT * FROM EVENTS")

@@ -2,7 +2,7 @@ package com.example.scheduledmessenger.utils
 
 import android.content.Context
 import android.content.Intent
-import com.example.scheduledmessenger.base.BaseReceiver
+import com.example.scheduledmessenger.base.BaseBroadCastReceiver
 import com.example.scheduledmessenger.data.source.ScheduleRepository
 import com.example.scheduledmessenger.data.source.local.entity.EventLog
 import dagger.hilt.android.AndroidEntryPoint
@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class AlarmReceiver : BaseReceiver() {
+class AlarmBroadCastReceiver : BaseBroadCastReceiver() {
 
     @Inject
     lateinit var scheduleRepository: ScheduleRepository

@@ -44,6 +44,9 @@ class ScheduleRepositoryImpl @Inject constructor(
     override suspend fun updateEvent(event: Event): Int =
         withContext(Dispatchers.IO) { eventsDataSource.updateEvent(event) }
 
-    override fun getEventById(id: Int): Event  = eventsDataSource.getEventById(id)
+    override fun getEventById(id: Int): Event = eventsDataSource.getEventById(id)
+
+    override fun getUpcomingEvents(timestamp: Long): List<Event> =
+        eventsDataSource.getUpcomingEvents(timestamp)
 
 }

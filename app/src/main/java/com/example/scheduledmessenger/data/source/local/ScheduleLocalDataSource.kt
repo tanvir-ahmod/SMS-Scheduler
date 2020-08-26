@@ -44,4 +44,6 @@ class ScheduleLocalDataSource @Inject constructor(
     suspend fun updateEvent(event: Event) = eventsDao.updateEventWithTimeStamp(event)
 
     fun getEventById(id: Int) = eventsDao.getEventById(id)
+
+    fun getUpcomingEvents(timestamp: Long) = eventsDao.getUpcomingEvents(timestamp)
 }
