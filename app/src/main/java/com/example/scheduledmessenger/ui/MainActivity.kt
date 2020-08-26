@@ -1,13 +1,13 @@
 package com.example.scheduledmessenger.ui
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.scheduledmessenger.R
 import com.example.scheduledmessenger.base.BaseActivity
@@ -15,8 +15,11 @@ import com.example.scheduledmessenger.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 
+
 @AndroidEntryPoint
 class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
+
+    private lateinit var appBarConfiguration: AppBarConfiguration
 
     lateinit var navController: NavController
 
@@ -28,16 +31,20 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
         super.onCreate(savedInstanceState)
         setContentView(mViewBinding.root)
         setupViews()
-
     }
 
-    private fun setupViews()
-    {
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragNavHost) as NavHostFragment
-        navController = navHostFragment.navController
-        NavigationUI.setupWithNavController(bottomNavView, navHostFragment.navController)
+    private fun setupViews() {
 
-        val appBarConfiguration = AppBarConfiguration(setOf(R.id.homeFragment, R.id.timelineFragment, R.id.logFragment, R.id.settingFragment))
-        setupActionBarWithNavController(navHostFragment.navController, appBarConfiguration)
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.fragNavHost) as NavHostFragment
+        navController = navHostFragment.navController
+        appBarConfiguration = AppBarConfiguration(navController.graph)
+        NavigationUI.setupWithNavController(bottomNavView, navController)
+        setupActionBarWithNavController(navController, appBarConfiguration)
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        return navController.navigateUp(appBarConfiguration)
+                || super.onSupportNavigateUp()
     }
 }

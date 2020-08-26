@@ -7,7 +7,7 @@ import com.example.scheduledmessenger.data.contacts.model.Contact
 import com.example.scheduledmessenger.databinding.ItemContactBinding
 
 
-class ContactsAdapter(private val onItemClicked: () -> Unit) :
+class ContactsAdapter(private val onItemClicked: (number : String) -> Unit) :
     RecyclerView.Adapter<ContactsAdapter.CameraHolder>() {
 
     private var contacts: List<Contact> = arrayListOf()
@@ -19,12 +19,15 @@ class ContactsAdapter(private val onItemClicked: () -> Unit) :
 
     class CameraHolder(private val binding: ItemContactBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bindData(contact: Contact, onItemClicked: () -> Unit) {
+        fun bindData(contact: Contact, onItemClicked: (number : String) -> Unit) {
             binding.tvName.text = contact.name
             binding.tvPhone.text = contact.phoneNumber
 
             binding.rootLayout.setOnClickListener {
-                onItemClicked()
+                contact.phoneNumber?.let {phoneNumber->
+                    onItemClicked(phoneNumber)
+                }
+
             }
         }
     }
