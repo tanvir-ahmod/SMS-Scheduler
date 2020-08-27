@@ -16,6 +16,7 @@ import com.example.scheduledmessenger.data.source.local.entity.PhoneNumber
 import com.example.scheduledmessenger.data.source.local.entity.SMS
 import com.example.scheduledmessenger.utils.Constants
 import com.example.scheduledmessenger.utils.ManagerAlarm
+import com.example.scheduledmessenger.utils.SMSSender
 import com.example.scheduledmessenger.utils.Utils
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
@@ -24,7 +25,8 @@ import java.util.*
 class AddSmsViewModel @ViewModelInject constructor(
     @ApplicationContext private val context: Context,
     private val scheduleRepository: ScheduleRepository,
-    private val alarmManager: ManagerAlarm
+    private val alarmManager: ManagerAlarm,
+    private val smsSender: SMSSender
 ) :
     BaseViewModel() {
 
@@ -134,6 +136,7 @@ class AddSmsViewModel @ViewModelInject constructor(
                 showLoader.value = false
                 showMessage.value = "Event Added"
                 _popBack.value = true
+
             }
         }
     }

@@ -18,4 +18,5 @@ interface ScheduleRepository {
     suspend fun updateEvent(event: Event) : Int
     fun getEventById(id: Int) : Event
     fun getUpcomingEvents(timestamp: Long) : List<Event>
+    suspend fun getSmsAndPhoneNumbersWithEventId(id: Int) :  SmsAndPhoneNumbers
 }

@@ -49,4 +49,10 @@ class ScheduleRepositoryImpl @Inject constructor(
     override fun getUpcomingEvents(timestamp: Long): List<Event> =
         eventsDataSource.getUpcomingEvents(timestamp)
 
+    override suspend fun getSmsAndPhoneNumbersWithEventId(id: Int): SmsAndPhoneNumbers =
+        withContext(Dispatchers.IO) {
+            eventsDataSource.getSmsAndPhoneNumbersWithEventId(id)
+        }
+
+
 }

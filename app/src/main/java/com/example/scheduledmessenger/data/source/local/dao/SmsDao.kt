@@ -26,5 +26,10 @@ interface SmsDao {
     @Query("SELECT * FROM SMSs")
     fun getSmsAndPhoneNumbers(): Flow<List<SmsAndPhoneNumbers>>
 
+    @Transaction
+    @Query("SELECT * FROM SMSs WHERE event_id = :id")
+    suspend fun getSmsAndPhoneNumbersWithEventId(id : Int): SmsAndPhoneNumbers
+
+
 
 }

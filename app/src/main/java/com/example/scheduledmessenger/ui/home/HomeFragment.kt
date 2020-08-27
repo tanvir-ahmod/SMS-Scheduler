@@ -1,8 +1,10 @@
 package com.example.scheduledmessenger.ui.home
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -18,6 +20,8 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
 
     private val upcomingEventAdapter = EventAdapter()
 
+    private val sendSmsPermissionCode = 100
+
     override val mViewModel: HomeViewModel by viewModels()
 
     override fun getViewBinding(): FragmentHomeBinding = FragmentHomeBinding.inflate(layoutInflater)
@@ -27,7 +31,10 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
         mViewBinding.rvUpcomingEvents.layoutManager = LinearLayoutManager(requireContext())
         mViewBinding.rvUpcomingEvents.adapter = upcomingEventAdapter
         mViewBinding.btnAdd.setOnClickListener {
-            findNavController().navigate(R.id.action_homeFragment_to_addSmsFragment)
+            if (isGrantedSendSMSPermission()) {
+                requestSendSmsPermission()
+            } else
+                gotoAddSmsFragment()
         }
     }
 
@@ -54,6 +61,39 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
             upcomingEventAdapter.addTimeLineData(events)
         })
 
+    }
+
+    private fun isGrantedSendSMSPermission(): Boolean = ContextCompat.checkSelfPermission(
+        requireContext(),
+        Manifest.permission.SEND_SMS
+    ) != PackageManager.PERMISSION_GRANTED
+
+    private fun requestSendSmsPermission() {
+        requestPermissions(
+            arrayOf(Manifest.permission.SEND_SMS),
+            sendSmsPermissionCode
+        )
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == sendSmsPermissionCode) {
+            if (grantResults.isNotEmpty()
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED
+            ) {
+                gotoAddSmsFragment()
+            } else {
+                mViewModel.showMessage.value = "Send message permission required"
+            }
+        }
+    }
+
+    private fun gotoAddSmsFragment() {
+        findNavController().navigate(R.id.action_homeFragment_to_addSmsFragment)
     }
 
 }
