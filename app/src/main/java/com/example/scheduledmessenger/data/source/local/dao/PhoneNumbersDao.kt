@@ -1,6 +1,7 @@
 package com.example.scheduledmessenger.data.source.local.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import com.example.scheduledmessenger.data.source.local.entity.PhoneNumber
 
@@ -9,6 +10,9 @@ interface PhoneNumbersDao {
 
     @Insert
     fun insertSinglePhoneNumber(phoneNumber: PhoneNumber): Long
+
+    @Delete
+    suspend fun deletePhoneNumber(phoneNumber: PhoneNumber)
 
     @Insert
     suspend fun insertSinglePhoneNumbers(phoneNumbers: List<PhoneNumber>)

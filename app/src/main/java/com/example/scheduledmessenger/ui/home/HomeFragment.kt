@@ -13,12 +13,13 @@ import com.example.scheduledmessenger.R
 import com.example.scheduledmessenger.base.BaseFragment
 import com.example.scheduledmessenger.databinding.FragmentHomeBinding
 import com.example.scheduledmessenger.ui.adapter.EventAdapter
+import com.example.scheduledmessenger.ui.timeline.TimelineFragmentDirections
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
 
-    private val upcomingEventAdapter = EventAdapter()
+    private val upcomingEventAdapter = EventAdapter(this::onEditClicked)
 
     private val sendSmsPermissionCode = 100
 
@@ -96,4 +97,8 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
         findNavController().navigate(R.id.action_homeFragment_to_addSmsFragment)
     }
 
+    private fun onEditClicked(id: Int) {
+        val action = HomeFragmentDirections.actionHomeFragmentToAddSmsFragment(id)
+        findNavController().navigate(action)
+    }
 }

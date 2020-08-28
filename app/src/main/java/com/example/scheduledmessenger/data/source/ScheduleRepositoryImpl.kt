@@ -44,7 +44,8 @@ class ScheduleRepositoryImpl @Inject constructor(
     override suspend fun updateEvent(event: Event): Int =
         withContext(Dispatchers.IO) { eventsDataSource.updateEvent(event) }
 
-    override fun getEventById(id: Int): Event = eventsDataSource.getEventById(id)
+    override suspend fun getEventById(id: Int): Event =
+        withContext(Dispatchers.IO) { eventsDataSource.getEventById(id) }
 
     override fun getUpcomingEvents(timestamp: Long): List<Event> =
         eventsDataSource.getUpcomingEvents(timestamp)
@@ -54,5 +55,10 @@ class ScheduleRepositoryImpl @Inject constructor(
             eventsDataSource.getSmsAndPhoneNumbersWithEventId(id)
         }
 
+    override suspend fun updateSms(sms: SMS): Int =
+        withContext(Dispatchers.IO) { eventsDataSource.updateSms(sms) }
+
+    override suspend fun deletePhoneNumber(phoneNumber: PhoneNumber) =
+        withContext(Dispatchers.IO) { eventsDataSource.deletePhoneNumber(phoneNumber) }
 
 }

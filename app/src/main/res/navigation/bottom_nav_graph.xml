@@ -16,7 +16,11 @@
     <fragment
         android:id="@+id/timelineFragment"
         android:name="com.example.scheduledmessenger.ui.timeline.TimelineFragment"
-        android:label="Timeline" />
+        android:label="Timeline" >
+        <action
+            android:id="@+id/action_timelineFragment_to_addSmsFragment"
+            app:destination="@id/addSmsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/logFragment"
         android:name="com.example.scheduledmessenger.ui.log.LogFragment"
@@ -29,9 +33,14 @@
         android:id="@+id/addSmsFragment"
         android:name="com.example.scheduledmessenger.ui.add_sms.AddSmsFragment"
         android:label="AddSms" >
+        <argument
+            android:name="eventId"
+            app:argType="integer"
+            android:defaultValue="0" />
         <action
             android:id="@+id/action_addSmsFragment_to_showContactsFragment"
             app:destination="@id/showContactsFragment" />
+
     </fragment>
     <fragment
         android:id="@+id/showContactsFragment"

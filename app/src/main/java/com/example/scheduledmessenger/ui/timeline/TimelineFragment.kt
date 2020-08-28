@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.scheduledmessenger.base.BaseFragment
 import com.example.scheduledmessenger.databinding.FragmentTimelineBinding
@@ -15,7 +16,7 @@ class TimelineFragment : BaseFragment<TimelineViewModel, FragmentTimelineBinding
     override val mViewModel: TimelineViewModel by viewModels()
 
     private val timelineAdapter =
-        EventAdapter()
+        EventAdapter(this::onEditClicked)
 
     override fun getViewBinding(): FragmentTimelineBinding =
         FragmentTimelineBinding.inflate(layoutInflater)
@@ -33,6 +34,11 @@ class TimelineFragment : BaseFragment<TimelineViewModel, FragmentTimelineBinding
             timelineAdapter.addTimeLineData(events)
         })
 
+    }
+
+    private fun onEditClicked(id : Int){
+        val action = TimelineFragmentDirections.actionTimelineFragmentToAddSmsFragment(id)
+        findNavController().navigate(action)
     }
 
 }

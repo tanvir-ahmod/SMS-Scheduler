@@ -16,7 +16,6 @@ import com.example.scheduledmessenger.data.source.local.entity.PhoneNumber
 import com.example.scheduledmessenger.data.source.local.entity.SMS
 import com.example.scheduledmessenger.utils.Constants
 import com.example.scheduledmessenger.utils.ManagerAlarm
-import com.example.scheduledmessenger.utils.SMSSender
 import com.example.scheduledmessenger.utils.Utils
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
@@ -25,12 +24,14 @@ import java.util.*
 class AddSmsViewModel @ViewModelInject constructor(
     @ApplicationContext private val context: Context,
     private val scheduleRepository: ScheduleRepository,
-    private val alarmManager: ManagerAlarm,
-    private val smsSender: SMSSender
+    private val alarmManager: ManagerAlarm
 ) :
     BaseViewModel() {
 
+    private var eventId = 0
+
     val etReceiverNumber = ObservableField<String>("")
+    val showCancelButton = ObservableField<Boolean>(false)
     private val selectDate = Calendar.getInstance()
     private val receivers: ArrayList<String> = arrayListOf()
     val selectedDateText =
@@ -38,7 +39,7 @@ class AddSmsViewModel @ViewModelInject constructor(
     val selectedTimeText =
         ObservableField<String>(Utils.timeFormatter.format(selectDate.time).toString())
 
-    val message = ObservableField<String>()
+    val etMessage = ObservableField<String>()
     val messageError = ObservableField<String>()
     val receiverError = ObservableField<String>()
 
@@ -102,42 +103,86 @@ class AddSmsViewModel @ViewModelInject constructor(
 
     fun addSMS() {
         if (validateInput()) {
-            viewModelScope.launch {
-                showLoader.value = true
-                val eventID = scheduleRepository.insertEvent(
-                    Event(
-                        status = Constants.PENDING,
-                        timestamp = selectDate.timeInMillis
-                    )
-                )
+            if (eventId == 0)
+                scheduleSms()
+            else
+                updateSms()
+        }
+    }
 
-                alarmManager.setAlarm(eventID.toInt(), selectDate.timeInMillis)
+    private fun updateSms() {
+        viewModelScope.launch {
 
-                val smsID = scheduleRepository.insertSMS(
-                    SMS(
-                        eventID = eventID.toInt(),
-                        message = message.get().toString()
-                    )
-                )
-                val phoneNumbers = arrayListOf<PhoneNumber>()
-                for (number in receivers) {
-                    phoneNumbers.add(PhoneNumber(phoneNumber = number, smsID = smsID.toInt()))
-                }
+            val smsAndPhoneNumbers =
+                scheduleRepository.getSmsAndPhoneNumbersWithEventId(eventId)
+            val sms = smsAndPhoneNumbers.sms
+            sms.message = etMessage.get().toString()
+            sms.updatedAt = System.currentTimeMillis()
+            scheduleRepository.updateSms(sms)
 
-                scheduleRepository.insertPhoneNumbers(phoneNumbers)
+            for (phoneNumber in smsAndPhoneNumbers.phoneNumbers)
+                scheduleRepository.deletePhoneNumber(phoneNumber)
 
-                scheduleRepository.insertLog(
-                    EventLog(
-                        logStatus = Constants.SMS_INITIATED,
-                        eventID = eventID.toInt()
-                    )
-                )
-
-                showLoader.value = false
-                showMessage.value = "Event Added"
-                _popBack.value = true
-
+            val phoneNumbers = arrayListOf<PhoneNumber>()
+            for (number in receivers) {
+                phoneNumbers.add(PhoneNumber(phoneNumber = number, smsID = sms.id))
             }
+            scheduleRepository.insertPhoneNumbers(phoneNumbers)
+
+            val event = scheduleRepository.getEventById(eventId)
+            event.timestamp = selectDate.timeInMillis
+            event.updatedAt = System.currentTimeMillis()
+            scheduleRepository.updateEvent(event)
+
+            scheduleRepository.insertLog(
+                EventLog(
+                    logStatus = Constants.SMS_MODIFIED,
+                    eventID = eventId
+                )
+            )
+
+            showLoader.value = false
+            showMessage.value = "Event Updated"
+            _popBack.value = true
+        }
+    }
+
+    private fun scheduleSms() {
+        viewModelScope.launch {
+            showLoader.value = true
+            val eventID = scheduleRepository.insertEvent(
+                Event(
+                    status = Constants.PENDING,
+                    timestamp = selectDate.timeInMillis
+                )
+            )
+
+            alarmManager.setAlarm(eventID.toInt(), selectDate.timeInMillis)
+
+            val smsID = scheduleRepository.insertSMS(
+                SMS(
+                    eventID = eventID.toInt(),
+                    message = etMessage.get().toString()
+                )
+            )
+            val phoneNumbers = arrayListOf<PhoneNumber>()
+            for (number in receivers) {
+                phoneNumbers.add(PhoneNumber(phoneNumber = number, smsID = smsID.toInt()))
+            }
+
+            scheduleRepository.insertPhoneNumbers(phoneNumbers)
+
+            scheduleRepository.insertLog(
+                EventLog(
+                    logStatus = Constants.SMS_INITIATED,
+                    eventID = eventID.toInt()
+                )
+            )
+
+            showLoader.value = false
+            showMessage.value = "Event Added"
+            _popBack.value = true
+
         }
     }
 
@@ -149,7 +194,7 @@ class AddSmsViewModel @ViewModelInject constructor(
             isOkay = false
         }
 
-        if (message.get().isNullOrEmpty()) {
+        if (etMessage.get().isNullOrEmpty()) {
             messageError.set(context.getString(R.string.error_empty))
             isOkay = false
         }
@@ -159,5 +204,33 @@ class AddSmsViewModel @ViewModelInject constructor(
     private fun hideAllError() {
         receiverError.set(null)
         messageError.set(null)
+    }
+
+    fun setEventId(id: Int) {
+        eventId = id
+        // Fetch data to edit
+        if (eventId != 0) {
+            showCancelButton.set(true)
+            try {
+                viewModelScope.launch {
+                    val event = scheduleRepository.getEventById(eventId)
+                    val smsAndPhoneNumbers =
+                        scheduleRepository.getSmsAndPhoneNumbersWithEventId(eventId)
+
+                    receivers.clear()
+                    for (phoneNumber in smsAndPhoneNumbers.phoneNumbers) {
+                        receivers.add(phoneNumber.phoneNumber)
+                    }
+                    _receiverNumbers.value = receivers
+
+                    etMessage.set(smsAndPhoneNumbers.sms.message)
+                    selectDate.timeInMillis = event.timestamp
+                    selectedDateText.set(Utils.dateFormatter.format(event.timestamp))
+                    selectedTimeText.set(Utils.timeFormatter.format(event.timestamp))
+                }
+            } catch (e: Exception) {
+                showMessage.value = e.message
+            }
+        }
     }
 }

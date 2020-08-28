@@ -1,9 +1,6 @@
 package com.example.scheduledmessenger.data.source.local.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Transaction
+import androidx.room.*
 import com.example.scheduledmessenger.data.source.local.entity.SMS
 import com.example.scheduledmessenger.data.source.local.entity.SmsAndPhoneNumbers
 import kotlinx.coroutines.flow.Flow
@@ -13,6 +10,9 @@ interface SmsDao {
 
     @Query("SELECT COUNT(*) FROM SMSs")
     fun getTotalSMSs(): Flow<Int>
+
+    @Update
+    suspend fun updateSMS(sms: SMS): Int
 
     @Insert
     fun insertSingleSMS(sms: SMS): Long

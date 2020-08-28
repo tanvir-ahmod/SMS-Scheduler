@@ -5,6 +5,7 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -14,6 +15,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.scheduledmessenger.R
 import com.example.scheduledmessenger.base.BaseFragment
 import com.example.scheduledmessenger.databinding.FragmentAddSmsBinding
@@ -28,6 +30,8 @@ class AddSmsFragment : BaseFragment<AddSmsViewModel, FragmentAddSmsBinding>() {
     private val sharedViewModel: MainViewModel by activityViewModels()
 
     private val readContactPermissionCode = 100
+
+    private val args: AddSmsFragmentArgs by navArgs()
 
     override val mViewModel: AddSmsViewModel by viewModels()
 
@@ -48,6 +52,7 @@ class AddSmsFragment : BaseFragment<AddSmsViewModel, FragmentAddSmsBinding>() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        mViewModel.setEventId(args.eventId)
         setUpObservers()
     }
 
