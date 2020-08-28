@@ -54,4 +54,7 @@ class ScheduleLocalDataSource @Inject constructor(
 
     suspend fun deletePhoneNumber(phoneNumber: PhoneNumber) =
         phoneNumbersDao.deletePhoneNumber(phoneNumber)
+
+    suspend fun deleteEvent(event: Event) =
+        eventsDao.deleteEvent(event)
 }

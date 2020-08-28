@@ -21,4 +21,5 @@ interface ScheduleRepository {
     suspend fun getSmsAndPhoneNumbersWithEventId(id: Int) :  SmsAndPhoneNumbers
     suspend fun updateSms(sms: SMS) : Int
     suspend fun deletePhoneNumber(phoneNumber: PhoneNumber)
+    suspend fun deleteEvent(event: Event)
 }

@@ -4,14 +4,18 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.scheduledmessenger.R
 import com.example.scheduledmessenger.base.BaseFragment
+import com.example.scheduledmessenger.data.source.local.entity.Event
 import com.example.scheduledmessenger.databinding.FragmentHomeBinding
+import com.example.scheduledmessenger.ui.MainViewModel
 import com.example.scheduledmessenger.ui.adapter.EventAdapter
 import com.example.scheduledmessenger.ui.timeline.TimelineFragmentDirections
 import dagger.hilt.android.AndroidEntryPoint
@@ -19,9 +23,11 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
 
-    private val upcomingEventAdapter = EventAdapter(this::onEditClicked)
+    private val upcomingEventAdapter = EventAdapter(this::onEditClicked, this::onDeleteClicked)
 
     private val sendSmsPermissionCode = 100
+
+    private val sharedViewModel: MainViewModel by activityViewModels()
 
     override val mViewModel: HomeViewModel by viewModels()
 
@@ -100,5 +106,22 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
     private fun onEditClicked(id: Int) {
         val action = HomeFragmentDirections.actionHomeFragmentToAddSmsFragment(id)
         findNavController().navigate(action)
+    }
+
+    private fun onDeleteClicked(event: Event) {
+        AlertDialog.Builder(requireContext())
+            .setTitle(requireContext().resources.getString(R.string.delete_entry_title))
+            .setMessage(requireContext().resources.getString(R.string.delete_entry_message))
+            .setPositiveButton(
+                requireContext().resources.getString(R.string.delete_yes)
+            ) { _, _ ->
+                sharedViewModel.deleteEvent(event)
+            }
+            .setNegativeButton(
+                requireContext().resources.getString(R.string.delete_no),
+                null
+            )
+            .setIcon(android.R.drawable.ic_dialog_alert)
+            .show()
     }
 }

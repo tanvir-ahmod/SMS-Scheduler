@@ -1,5 +1,6 @@
 package com.example.scheduledmessenger.base
 
+import android.R
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
@@ -7,8 +8,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
+import com.example.scheduledmessenger.data.source.local.entity.Event
 
 
 abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding> : Fragment() {

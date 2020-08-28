@@ -18,6 +18,9 @@ interface EventsDao {
     @Update
     suspend fun updateEvent(event: Event): Int
 
+    @Delete
+    suspend fun deleteEvent(event: Event)
+
     suspend fun updateEventWithTimeStamp(event: Event): Int = updateEvent(event.apply {
         updatedAt = System.currentTimeMillis()
     })

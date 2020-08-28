@@ -61,4 +61,7 @@ class ScheduleRepositoryImpl @Inject constructor(
     override suspend fun deletePhoneNumber(phoneNumber: PhoneNumber) =
         withContext(Dispatchers.IO) { eventsDataSource.deletePhoneNumber(phoneNumber) }
 
+    override suspend fun deleteEvent(event: Event) =
+        withContext(Dispatchers.IO) { eventsDataSource.deleteEvent(event) }
+
 }

@@ -4,13 +4,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.scheduledmessenger.data.source.local.entity.Event
 import com.example.scheduledmessenger.data.source.local.entity.EventWithSmsAndPhoneNumbers
 import com.example.scheduledmessenger.databinding.ItemTimelineBinding
 import com.example.scheduledmessenger.utils.Constants
 import com.example.scheduledmessenger.utils.Utils
 import java.lang.StringBuilder
 
-class EventAdapter(private val onEditClicked: (id: Int) -> Unit) :
+class EventAdapter(private val onEditClicked: (id: Int) -> Unit, private val onDeleteClicked: (event : Event) -> Unit) :
     RecyclerView.Adapter<EventAdapter.TimeLineHolder>() {
 
     private var eventWithSmsAndPhoneNumbers: List<EventWithSmsAndPhoneNumbers> = arrayListOf()
@@ -25,7 +26,8 @@ class EventAdapter(private val onEditClicked: (id: Int) -> Unit) :
 
         fun bind(
             eventWithSmsAndPhoneNumbers: EventWithSmsAndPhoneNumbers,
-            onEditClicked: (id: Int) -> Unit
+            onEditClicked: (id: Int) -> Unit,
+            onDeleteClicked: (event : Event) -> Unit
         ) {
             val smsAndPhoneNumbers = eventWithSmsAndPhoneNumbers.smsAndPhoneNumbers
             val phoneNumbers = StringBuilder()
@@ -43,6 +45,10 @@ class EventAdapter(private val onEditClicked: (id: Int) -> Unit) :
             binding.tvMessage.text = message
             binding.tvDate.text = date
             binding.tvTime.text = time
+
+            binding.ivDelete.setOnClickListener {
+                onDeleteClicked(eventWithSmsAndPhoneNumbers.event)
+            }
 
             binding.ivEdit.visibility =
                 if (eventWithSmsAndPhoneNumbers.event.status == Constants.SENT)
@@ -69,6 +75,6 @@ class EventAdapter(private val onEditClicked: (id: Int) -> Unit) :
     override fun onBindViewHolder(holder: TimeLineHolder, position: Int) {
 
         val event = eventWithSmsAndPhoneNumbers[position]
-        holder.bind(event, onEditClicked)
+        holder.bind(event, onEditClicked, onDeleteClicked)
     }
 }
