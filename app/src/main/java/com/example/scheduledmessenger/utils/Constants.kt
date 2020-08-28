@@ -19,7 +19,7 @@ object Constants {
             SMS_INITIATED to "SMS initiated",
             SMS_SENT to "SMS sent",
             SMS_MODIFIED to "SMS modified",
-            SMS_CANCELED to "SMS Cancelled",
-            SMS_FAILED to "SMS Failed"
+            SMS_CANCELED to "SMS dismissed",
+            SMS_FAILED to "SMS failed"
         )
 }

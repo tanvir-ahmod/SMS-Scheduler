@@ -15,15 +15,26 @@ class ManagerAlarm @Inject constructor(@ApplicationContext private val context: 
 
     fun setAlarm(id: Int, timestamp: Long) {
 
-
         alarmIntent = Intent(context, AlarmBroadCastReceiver::class.java).let { intent ->
             intent.putExtra(Constants.ID, id)
-            PendingIntent.getBroadcast(context, id, intent, 0)
+            PendingIntent.getBroadcast(context, id, intent, PendingIntent.FLAG_UPDATE_CURRENT)
         }
         alarmMgr.setExactAndAllowWhileIdle(
             AlarmManager.RTC_WAKEUP,
             timestamp,
             alarmIntent
         )
+    }
+
+    fun updateAlarm(id: Int, timestamp: Long){
+        dismissAlarm(id)
+        setAlarm(id, timestamp)
+    }
+    fun dismissAlarm(id: Int) {
+        alarmIntent = Intent(context, AlarmBroadCastReceiver::class.java).let { intent ->
+            intent.putExtra(Constants.ID, id)
+            PendingIntent.getBroadcast(context, id, intent, 0)
+        }
+        alarmMgr.cancel(alarmIntent)
     }
 }

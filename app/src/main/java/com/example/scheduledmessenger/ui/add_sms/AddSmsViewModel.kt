@@ -134,6 +134,8 @@ class AddSmsViewModel @ViewModelInject constructor(
             event.updatedAt = System.currentTimeMillis()
             scheduleRepository.updateEvent(event)
 
+            alarmManager.updateAlarm(event.id, selectDate.timeInMillis)
+
             scheduleRepository.insertLog(
                 EventLog(
                     logStatus = Constants.SMS_MODIFIED,
@@ -186,6 +188,28 @@ class AddSmsViewModel @ViewModelInject constructor(
         }
     }
 
+    fun dismissAlarm() {
+        alarmManager.dismissAlarm(eventId)
+
+        viewModelScope.launch {
+            val event = scheduleRepository.getEventById(eventId)
+            event.status = Constants.DISMISSED
+            event.updatedAt = System.currentTimeMillis()
+            scheduleRepository.updateEvent(event)
+
+            scheduleRepository.insertLog(
+                EventLog(
+                    logStatus = Constants.SMS_CANCELED,
+                    eventID = event.id
+                )
+            )
+
+            showLoader.value = false
+            showMessage.value = "Event Cancelled"
+            _popBack.value = true
+        }
+    }
+
     private fun validateInput(): Boolean {
         var isOkay = true
         hideAllError()
@@ -210,10 +234,13 @@ class AddSmsViewModel @ViewModelInject constructor(
         eventId = id
         // Fetch data to edit
         if (eventId != 0) {
-            showCancelButton.set(true)
+
             try {
                 viewModelScope.launch {
                     val event = scheduleRepository.getEventById(eventId)
+                    if (event.status != Constants.DISMISSED) {
+                        showCancelButton.set(true)
+                    }
                     val smsAndPhoneNumbers =
                         scheduleRepository.getSmsAndPhoneNumbersWithEventId(eventId)
 

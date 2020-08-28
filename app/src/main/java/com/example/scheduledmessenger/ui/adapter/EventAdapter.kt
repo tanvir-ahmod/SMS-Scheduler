@@ -44,8 +44,10 @@ class EventAdapter(private val onEditClicked: (id: Int) -> Unit) :
             binding.tvDate.text = date
             binding.tvTime.text = time
 
-            if (eventWithSmsAndPhoneNumbers.event.status == Constants.SENT)
-                binding.ivEdit.visibility = View.GONE
+            binding.ivEdit.visibility =
+                if (eventWithSmsAndPhoneNumbers.event.status == Constants.SENT)
+                    View.GONE else View.VISIBLE
+
 
             binding.ivEdit.setOnClickListener {
                 onEditClicked(eventWithSmsAndPhoneNumbers.event.id)
