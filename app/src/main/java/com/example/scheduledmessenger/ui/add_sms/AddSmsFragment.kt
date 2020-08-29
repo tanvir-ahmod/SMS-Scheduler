@@ -4,11 +4,15 @@ import android.Manifest
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import android.widget.CheckBox
+import android.widget.LinearLayout
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
@@ -31,6 +35,7 @@ class AddSmsFragment : BaseFragment<AddSmsViewModel, FragmentAddSmsBinding>() {
     private val sharedViewModel: MainViewModel by activityViewModels()
 
     private val readContactPermissionCode = 100
+    private val readPhoneStatePermissionCode = 200
 
     private val args: AddSmsFragmentArgs by navArgs()
 
@@ -48,7 +53,52 @@ class AddSmsFragment : BaseFragment<AddSmsViewModel, FragmentAddSmsBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        showAvailableSims()
         initListeners()
+    }
+
+    private fun showAvailableSims() {
+        if (isGrantedReadPhoneStatePermission()) {
+            requestReadPhoneStatePermission()
+        } else
+            mViewModel.showSimCards()
+    }
+
+    private fun initListeners() {
+        mViewBinding.ivShowContacts.setOnClickListener {
+            if (isGrantedReadContactPermission()) {
+                requestReadContactPermission()
+            } else
+                gotoContactFragment()
+        }
+    }
+
+    private fun isGrantedReadContactPermission(): Boolean = ContextCompat.checkSelfPermission(
+        requireContext(),
+        Manifest.permission.READ_CONTACTS
+    ) != PackageManager.PERMISSION_GRANTED
+
+    private fun isGrantedReadPhoneStatePermission(): Boolean = ContextCompat.checkSelfPermission(
+        requireContext(),
+        Manifest.permission.READ_PHONE_STATE
+    ) != PackageManager.PERMISSION_GRANTED
+
+    private fun requestReadContactPermission() {
+        requestPermissions(
+            arrayOf(Manifest.permission.READ_CONTACTS),
+            readContactPermissionCode
+        )
+    }
+
+    private fun requestReadPhoneStatePermission() {
+        requestPermissions(
+            arrayOf(Manifest.permission.READ_PHONE_STATE),
+            readPhoneStatePermissionCode
+        )
+    }
+
+    private fun gotoContactFragment() {
+        findNavController().navigate(R.id.action_addSmsFragment_to_showContactsFragment)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -59,10 +109,7 @@ class AddSmsFragment : BaseFragment<AddSmsViewModel, FragmentAddSmsBinding>() {
     }
 
     private fun setUpObservers() {
-
         mViewModel.actionBarText.observe(viewLifecycleOwner, Observer { title ->
-//            requireActivity().actionBar?.title = title
-
             (activity as AppCompatActivity?)!!.supportActionBar?.title = title
         })
 
@@ -109,16 +156,13 @@ class AddSmsFragment : BaseFragment<AddSmsViewModel, FragmentAddSmsBinding>() {
         sharedViewModel.contactNumber.observe(viewLifecycleOwner, Observer { phoneNumber ->
             mViewModel.etReceiverNumber.set(phoneNumber)
         })
-    }
 
-    private fun initListeners() {
-
-        mViewBinding.ivShowContacts.setOnClickListener {
-            if (isGrantedReadContactPermission()) {
-                requestReadContactPermission()
-            } else
-                gotoContactFragment()
-        }
+        mViewModel.availableSims.observe(viewLifecycleOwner, Observer { sims ->
+            mViewBinding.llSimInfoContainer.removeAllViews()
+            for (sim in sims) {
+                mViewBinding.llSimInfoContainer.addView(sim)
+            }
+        })
     }
 
     private fun showDatePicker(date: Calendar) {
@@ -147,18 +191,6 @@ class AddSmsFragment : BaseFragment<AddSmsViewModel, FragmentAddSmsBinding>() {
         mDatePicker.show()
     }
 
-    private fun isGrantedReadContactPermission(): Boolean = ContextCompat.checkSelfPermission(
-        requireContext(),
-        Manifest.permission.READ_CONTACTS
-    ) != PackageManager.PERMISSION_GRANTED
-
-    private fun requestReadContactPermission() {
-        requestPermissions(
-            arrayOf(Manifest.permission.READ_CONTACTS),
-            readContactPermissionCode
-        )
-    }
-
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -173,11 +205,13 @@ class AddSmsFragment : BaseFragment<AddSmsViewModel, FragmentAddSmsBinding>() {
             } else {
                 mViewModel.showMessage.value = "Contact permission required"
             }
+        } else if (requestCode == readPhoneStatePermissionCode) {
+            if (grantResults.isNotEmpty()
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED
+            ) {
+                mViewModel.showSimCards()
+            }
         }
-    }
-
-    private fun gotoContactFragment() {
-        findNavController().navigate(R.id.action_addSmsFragment_to_showContactsFragment)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

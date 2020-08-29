@@ -24,9 +24,9 @@ class SMSSender @Inject constructor(
     private val SENT = "SMS_SENT"
     private val DELIVERED = "SMS_DELIVERED"
 
-    private fun sendSms(phoneNumbers: List<PhoneNumber>, message: String) {
+    private fun sendSms(subscriptionId: Int, phoneNumbers: List<PhoneNumber>, message: String) {
         for (phoneNumber in phoneNumbers) {
-            send(phoneNumber.phoneNumber, message)
+            send(subscriptionId, phoneNumber.phoneNumber, message)
         }
     }
 
@@ -35,7 +35,11 @@ class SMSSender @Inject constructor(
             GlobalScope.launch(Dispatchers.IO) {
                 val smsAndPhoneNumbers =
                     scheduleRepository.getSmsAndPhoneNumbersWithEventId(eventId)
-                sendSms(smsAndPhoneNumbers.phoneNumbers, smsAndPhoneNumbers.sms.message)
+                sendSms(
+                    smsAndPhoneNumbers.sms.subscriptionID,
+                    smsAndPhoneNumbers.phoneNumbers,
+                    smsAndPhoneNumbers.sms.message
+                )
 
                 updateDbWithSuccess(eventId)
             }
@@ -68,7 +72,7 @@ class SMSSender @Inject constructor(
         )
     }
 
-    private fun send(phoneNumber: String, message: String) {
+    private fun send(subscriptionId: Int, phoneNumber: String, message: String) {
 
         val sentPI = PendingIntent.getBroadcast(
             context, 0,
@@ -122,7 +126,10 @@ class SMSSender @Inject constructor(
                 }
             }
         }, IntentFilter(DELIVERED))
-        val sms = SmsManager.getDefault()
-        sms.sendTextMessage(phoneNumber, null, message, sentPI, deliveredPI)
+
+        SmsManager.getSmsManagerForSubscriptionId(subscriptionId)
+            .sendTextMessage(phoneNumber, null, message, sentPI, deliveredPI)
+        /* val sms = SmsManager.getDefault()
+         sms.sendTextMessage(phoneNumber, null, message, sentPI, deliveredPI)*/
     }
 }

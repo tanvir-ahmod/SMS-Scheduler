@@ -1,6 +1,12 @@
 package com.example.scheduledmessenger.ui.add_sms
 
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
+import android.telephony.SubscriptionInfo
+import android.telephony.SubscriptionManager
+import android.widget.CheckBox
+import androidx.core.app.ActivityCompat
 import androidx.databinding.ObservableField
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
@@ -20,6 +26,8 @@ import com.example.scheduledmessenger.utils.Utils
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
 import java.util.*
+import kotlin.collections.ArrayList
+
 
 class AddSmsViewModel @ViewModelInject constructor(
     @ApplicationContext private val context: Context,
@@ -69,8 +77,11 @@ class AddSmsViewModel @ViewModelInject constructor(
         return@switchMap timePicker
     }
 
-    fun addReceiverNumber() {
+    private val _availableSims = MutableLiveData<List<CheckBox>>()
+    val availableSims: LiveData<List<CheckBox>> = _availableSims
+    private val sims: ArrayList<CheckBox> = arrayListOf()
 
+    fun addReceiverNumber() {
         if (!isFormEditable.get()!!)
             return
 
@@ -81,7 +92,6 @@ class AddSmsViewModel @ViewModelInject constructor(
     }
 
     fun removeNumber(position: Int) {
-
         if (!isFormEditable.get()!!)
             return
 
@@ -134,6 +144,7 @@ class AddSmsViewModel @ViewModelInject constructor(
             val sms = smsAndPhoneNumbers.sms
             sms.message = etMessage.get().toString()
             sms.updatedAt = System.currentTimeMillis()
+            sms.subscriptionID = getCheckedBoxId()
             scheduleRepository.updateSms(sms)
 
             for (phoneNumber in smsAndPhoneNumbers.phoneNumbers)
@@ -151,7 +162,6 @@ class AddSmsViewModel @ViewModelInject constructor(
             scheduleRepository.updateEvent(event)
 
             alarmManager.updateAlarm(event.id, selectDate.timeInMillis)
-
             scheduleRepository.insertLog(
                 EventLog(
                     logStatus = Constants.SMS_MODIFIED,
@@ -176,27 +186,26 @@ class AddSmsViewModel @ViewModelInject constructor(
             )
 
             alarmManager.setAlarm(eventID.toInt(), selectDate.timeInMillis)
-
             val smsID = scheduleRepository.insertSMS(
                 SMS(
                     eventID = eventID.toInt(),
-                    message = etMessage.get().toString()
+                    message = etMessage.get().toString(),
+                    subscriptionID = getCheckedBoxId()
                 )
             )
+
             val phoneNumbers = arrayListOf<PhoneNumber>()
             for (number in receivers) {
                 phoneNumbers.add(PhoneNumber(phoneNumber = number, smsID = smsID.toInt()))
             }
 
             scheduleRepository.insertPhoneNumbers(phoneNumbers)
-
             scheduleRepository.insertLog(
                 EventLog(
                     logStatus = Constants.SMS_INITIATED,
                     eventID = eventID.toInt()
                 )
             )
-
             showLoader.value = false
             showMessage.value = "Event Added"
             _popBack.value = true
@@ -270,6 +279,8 @@ class AddSmsViewModel @ViewModelInject constructor(
                     selectDate.timeInMillis = event.timestamp
                     selectedDateText.set(Utils.dateFormatter.format(event.timestamp))
                     selectedTimeText.set(Utils.timeFormatter.format(event.timestamp))
+
+                    setSimChecked(smsAndPhoneNumbers.sms.subscriptionID)
                 }
             } catch (e: Exception) {
                 showMessage.value = e.message
@@ -281,5 +292,65 @@ class AddSmsViewModel @ViewModelInject constructor(
         isFormEditable.set(isEditable)
         if (!isEditable)
             _actionBarText.value = "View SMS"
+    }
+
+    fun showSimCards() {
+        val localSubscriptionManager = context.getSystemService(SubscriptionManager::class.java)
+        if (ActivityCompat.checkSelfPermission(
+                context,
+                Manifest.permission.READ_PHONE_STATE
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            return
+        }
+        addSimViews(localSubscriptionManager.activeSubscriptionInfoList)
+    }
+
+    private fun clearAllSims() {
+        sims.clear()
+    }
+
+    private fun addSimView(checkBox: CheckBox) {
+        checkBox.setOnCheckedChangeListener { v, isChecked ->
+            onCheckBoxChecked(v.id, isChecked)
+        }
+        sims.add(checkBox)
+    }
+
+    private fun addSimViews(simInfoList: List<SubscriptionInfo>) {
+        clearAllSims()
+        for ((index, sim) in simInfoList.withIndex()) {
+            val checkBox = CheckBox(context)
+            val text = "SIM ${sim.simSlotIndex + 1} (${sim.displayName})"
+            checkBox.text = text
+            checkBox.id = sim.subscriptionId
+            if (index == 0)
+                checkBox.isChecked = true
+            addSimView(checkBox)
+        }
+
+        _availableSims.value = sims
+
+    }
+
+    private fun onCheckBoxChecked(id: Int, isChecked: Boolean) {
+        if (sims.size == 1)
+            sims[0].isChecked = true
+        for (sim in sims) {
+            if (sim.id != id)
+                sim.isChecked = !isChecked
+        }
+    }
+
+    private fun getCheckedBoxId(): Int {
+        for (sim in sims) {
+            if (sim.isChecked)
+                return sim.id
+        }
+        return 1
+    }
+
+    private fun setSimChecked(subscriptionID: Int) {
+        onCheckBoxChecked(subscriptionID, true)
     }
 }

@@ -19,6 +19,9 @@ data class SMS(
     @ColumnInfo(name = "event_id")
     var eventID: Int,
 
+    @ColumnInfo(name = "subscription_id")
+    var subscriptionID: Int,
+
     @ColumnInfo(name = "message")
     var message: String,
 
