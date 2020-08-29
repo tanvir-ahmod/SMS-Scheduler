@@ -31,6 +31,8 @@ class LogFragment : BaseFragment<LogViewModel, FragmentLogBinding>() {
 
         mViewModel.logData.observe(viewLifecycleOwner, Observer { logs ->
             logAdapter.addLogData(logs)
+            mViewBinding.tvNoDataFound.visibility =
+                if (logs.isEmpty()) View.VISIBLE else View.GONE
         })
     }
 

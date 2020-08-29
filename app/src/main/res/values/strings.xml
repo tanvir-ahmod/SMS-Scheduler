@@ -24,4 +24,6 @@
     <string name="delete_yes">Yes</string>
     <string name="delete_no">No</string>
     <string name="type_message_here">Type message here</string>
+    <string name="no_data_found">No Data Found</string>
+    <string name="no_upcoming_events">No Upcoming Events</string>
 </resources>

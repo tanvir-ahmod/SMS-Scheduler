@@ -17,7 +17,6 @@ import com.example.scheduledmessenger.data.source.local.entity.Event
 import com.example.scheduledmessenger.databinding.FragmentHomeBinding
 import com.example.scheduledmessenger.ui.MainViewModel
 import com.example.scheduledmessenger.ui.adapter.EventAdapter
-import com.example.scheduledmessenger.ui.timeline.TimelineFragmentDirections
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -63,11 +62,11 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
         mViewModel.totalFailedSms.observe(viewLifecycleOwner, Observer { totalFailed ->
             mViewBinding.tvFailedSms.text = totalFailed.toString()
         })
-
         mViewModel.upcomingEvents.observe(viewLifecycleOwner, Observer { events ->
             upcomingEventAdapter.addTimeLineData(events)
+            mViewBinding.tvNoDataFound.visibility =
+                if (events.isEmpty()) View.VISIBLE else View.GONE
         })
-
     }
 
     private fun isGrantedSendSMSPermission(): Boolean = ContextCompat.checkSelfPermission(

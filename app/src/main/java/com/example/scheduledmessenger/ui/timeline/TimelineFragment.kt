@@ -40,6 +40,8 @@ class TimelineFragment : BaseFragment<TimelineViewModel, FragmentTimelineBinding
         super.onActivityCreated(savedInstanceState)
         mViewModel.timeLineData.observe(viewLifecycleOwner, Observer { events ->
             timelineAdapter.addTimeLineData(events)
+            mViewBinding.tvNoDataFound.visibility =
+                if (events.isEmpty()) View.VISIBLE else View.GONE
         })
     }
 

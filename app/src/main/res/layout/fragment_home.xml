@@ -182,6 +182,15 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_upcoming_event_title" />
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_no_data_found"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:visibility="gone"
+            android:text="@string/no_upcoming_events"
+            android:textSize="18sp" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
