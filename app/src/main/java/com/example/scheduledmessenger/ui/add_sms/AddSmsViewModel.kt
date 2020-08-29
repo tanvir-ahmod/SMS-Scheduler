@@ -39,6 +39,7 @@ class AddSmsViewModel @ViewModelInject constructor(
     val selectedTimeText =
         ObservableField<String>(Utils.timeFormatter.format(selectDate.time).toString())
 
+    val isFormEditable = ObservableField<Boolean>(true)
     val etMessage = ObservableField<String>()
     val messageError = ObservableField<String>()
     val receiverError = ObservableField<String>()
@@ -46,6 +47,8 @@ class AddSmsViewModel @ViewModelInject constructor(
     private val _popBack = MutableLiveData<Boolean>(false)
     val popBack: LiveData<Boolean> = _popBack
 
+    private val _actionBarText = MutableLiveData<String>("Add SMS")
+    val actionBarText: LiveData<String> = _actionBarText
 
     private val _receiverNumbers = MutableLiveData<List<String>>()
     val receiverNumbers: LiveData<List<String>> = _receiverNumbers
@@ -67,6 +70,10 @@ class AddSmsViewModel @ViewModelInject constructor(
     }
 
     fun addReceiverNumber() {
+
+        if (!isFormEditable.get()!!)
+            return
+
         hideAllError()
         receivers.add(etReceiverNumber.get().toString())
         _receiverNumbers.value = receivers
@@ -74,6 +81,10 @@ class AddSmsViewModel @ViewModelInject constructor(
     }
 
     fun removeNumber(position: Int) {
+
+        if (!isFormEditable.get()!!)
+            return
+
         receivers.removeAt(position)
         _receiverNumbers.value = receivers
     }
@@ -102,6 +113,11 @@ class AddSmsViewModel @ViewModelInject constructor(
     }
 
     fun addSMS() {
+        if (!isFormEditable.get()!!) {
+            _popBack.value = true
+            return
+        }
+
         if (validateInput()) {
             if (eventId == 0)
                 scheduleSms()
@@ -234,7 +250,7 @@ class AddSmsViewModel @ViewModelInject constructor(
         eventId = id
         // Fetch data to edit
         if (eventId != 0) {
-
+            _actionBarText.value = "Edit SMS"
             try {
                 viewModelScope.launch {
                     val event = scheduleRepository.getEventById(eventId)
@@ -259,5 +275,11 @@ class AddSmsViewModel @ViewModelInject constructor(
                 showMessage.value = e.message
             }
         }
+    }
+
+    fun setIsEditable(isEditable: Boolean) {
+        isFormEditable.set(isEditable)
+        if (!isEditable)
+            _actionBarText.value = "View SMS"
     }
 }

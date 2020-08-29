@@ -5,11 +5,11 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -23,6 +23,7 @@ import com.example.scheduledmessenger.ui.MainViewModel
 import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
+
 
 @AndroidEntryPoint
 class AddSmsFragment : BaseFragment<AddSmsViewModel, FragmentAddSmsBinding>() {
@@ -53,14 +54,20 @@ class AddSmsFragment : BaseFragment<AddSmsViewModel, FragmentAddSmsBinding>() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         mViewModel.setEventId(args.eventId)
+        mViewModel.setIsEditable(args.isEditable)
         setUpObservers()
     }
 
     private fun setUpObservers() {
+
+        mViewModel.actionBarText.observe(viewLifecycleOwner, Observer { title ->
+//            requireActivity().actionBar?.title = title
+
+            (activity as AppCompatActivity?)!!.supportActionBar?.title = title
+        })
+
         mViewModel.receiverNumbers.observe(viewLifecycleOwner, Observer { numbers ->
-
             mViewBinding.chipGroupNumbers.removeAllViews()
-
             for ((position, number) in numbers.withIndex()) {
                 val chip = layoutInflater.inflate(
                     R.layout.chip_view,

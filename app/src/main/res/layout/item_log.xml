@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginStart="8dp"
     android:layout_marginTop="8dp"
     android:layout_marginEnd="8dp"
@@ -19,7 +20,7 @@
             android:id="@+id/tv_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="12/05, 07.02 PM"
+            tools:text="12/05, 07.02 PM"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -32,31 +33,22 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:gravity="center"
-            android:text="SMS Scheduled"
+            tools:text="SMS Scheduled"
             android:textColor="@color/colorBlack"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@+id/tv_time"
-            app:layout_constraintEnd_toStartOf="@+id/iv_status"
+            app:layout_constraintEnd_toStartOf="@+id/iv_show_details"
             app:layout_constraintStart_toEndOf="@+id/tv_time"
             app:layout_constraintTop_toTopOf="@+id/tv_time" />
 
 
         <ImageView
-            android:id="@+id/iv_status"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:id="@+id/iv_show_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginEnd="4dp"
             android:backgroundTint="@android:color/holo_green_dark"
-            android:src="@drawable/ic_sent"
-            app:layout_constraintEnd_toStartOf="@+id/iv_remove"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
-        <ImageView
-            android:id="@+id/iv_remove"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@drawable/ic_remove"
+            android:src="@drawable/ic_show_detail"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

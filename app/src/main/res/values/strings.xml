@@ -23,4 +23,5 @@
     <string name="delete_entry_message">Are you sure you want to delete this entry?</string>
     <string name="delete_yes">Yes</string>
     <string name="delete_no">No</string>
+    <string name="type_message_here">Type message here</string>
 </resources>

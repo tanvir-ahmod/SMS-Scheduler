@@ -24,7 +24,11 @@
     <fragment
         android:id="@+id/logFragment"
         android:name="com.example.scheduledmessenger.ui.log.LogFragment"
-        android:label="Log" />
+        android:label="Log" >
+        <action
+            android:id="@+id/action_logFragment_to_addSmsFragment"
+            app:destination="@id/addSmsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/settingFragment"
         android:name="com.example.scheduledmessenger.ui.setting.SettingFragment"
@@ -37,6 +41,11 @@
             android:name="eventId"
             app:argType="integer"
             android:defaultValue="0" />
+
+        <argument
+            android:name="isEditable"
+            app:argType="boolean"
+            android:defaultValue="true" />
         <action
             android:id="@+id/action_addSmsFragment_to_showContactsFragment"
             app:destination="@id/showContactsFragment" />

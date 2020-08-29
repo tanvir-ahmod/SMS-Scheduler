@@ -8,7 +8,9 @@ import com.example.scheduledmessenger.databinding.ItemLogBinding
 import com.example.scheduledmessenger.utils.Constants
 import com.example.scheduledmessenger.utils.Utils.logDateFormatter
 
-class LogAdapter :
+class LogAdapter(
+    private val onEditClicked: (id: Int, isEditable: Boolean) -> Unit
+) :
     RecyclerView.Adapter<LogAdapter.LogHolder>() {
 
     private var logs: List<EventLog> = arrayListOf()
@@ -21,14 +23,22 @@ class LogAdapter :
     class LogHolder(private val binding: ItemLogBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bindData(time: String, eventMessage: String) {
-            binding.tvTime.text = time
-            binding.tvStatus.text = eventMessage
+        fun bindData(
+            log: EventLog,
+            onEditClicked: (id: Int, isEditable: Boolean) -> Unit
+        ) {
+
+            binding.tvTime.text = logDateFormatter.format(log.timestamp)
+            binding.tvStatus.text = Constants.LOG_MESSAGE[log.logStatus]!!
+
+            val isEditable = log.logStatus != Constants.SMS_SENT
+            binding.ivShowDetails.setOnClickListener {
+                onEditClicked(log.eventID, isEditable)
+            }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LogHolder {
-
         val binding =
             ItemLogBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return LogHolder(binding)
@@ -38,8 +48,6 @@ class LogAdapter :
 
     override fun onBindViewHolder(holder: LogHolder, position: Int) {
         val log = logs[position]
-        val time = logDateFormatter.format(log.timestamp)
-        val status = Constants.LOG_MESSAGE[log.logStatus]!!
-        holder.bindData(time, status)
+        holder.bindData(log, onEditClicked)
     }
 }
