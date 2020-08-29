@@ -28,7 +28,7 @@ interface EventsDao {
     @Query("SELECT * FROM EVENTS WHERE id = :id")
     suspend fun getEventById(id: Int): Event
 
-    @Query("SELECT * FROM EVENTS WHERE timestamp > :timestamp")
+    @Query("SELECT * FROM EVENTS WHERE timestamp > :timestamp ORDER BY TIMESTAMP DESC")
     fun getUpcomingEvents(timestamp: Long): List<Event>
 
 
@@ -41,7 +41,7 @@ interface EventsDao {
     fun getSMSsWithStatus(status: Int): Flow<Int>
 
     @Transaction
-    @Query("SELECT * FROM EVENTS WHERE timestamp > :timestamp")
+    @Query("SELECT * FROM EVENTS WHERE timestamp > :timestamp ORDER BY TIMESTAMP DESC")
     fun getUpcomingSMSEvents(timestamp: Long): Flow<List<EventWithSmsAndPhoneNumbers>>
 
 }

@@ -16,7 +16,7 @@ interface EventLogsDao {
         timestamp = System.currentTimeMillis()
     })
 
-    @Query("SELECT * FROM EVENTLOG")
+    @Query("SELECT * FROM EVENTLOG ORDER BY TIMESTAMP DESC")
     fun getAllLogs() : Flow<List<EventLog>>
 
 
