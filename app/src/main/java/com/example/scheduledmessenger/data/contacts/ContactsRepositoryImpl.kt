@@ -8,7 +8,8 @@ import javax.inject.Inject
 
 class ContactsRepositoryImpl @Inject constructor(private val contactsServiceImp: ContactsServiceImp) :
     ContactsRepository {
-    override fun getContacts(): Flow<List<Contact>> = flow {
-        emit(contactsServiceImp.getContacts())
+
+    override fun getContactsByName(name : String): Flow<List<Contact>> = flow {
+        emit(contactsServiceImp.getContactsByName(name))
     }
 }

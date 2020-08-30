@@ -1,6 +1,8 @@
 package com.example.scheduledmessenger.ui.show_contacts
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -11,7 +13,11 @@ import com.example.scheduledmessenger.base.BaseFragment
 import com.example.scheduledmessenger.databinding.FragmentShowContactsBinding
 import com.example.scheduledmessenger.ui.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 
+@ExperimentalCoroutinesApi
+@FlowPreview
 @AndroidEntryPoint
 class ShowContactsFragment : BaseFragment<ShowContactsViewModel, FragmentShowContactsBinding>() {
 
@@ -32,8 +38,22 @@ class ShowContactsFragment : BaseFragment<ShowContactsViewModel, FragmentShowCon
         mViewBinding.rvContacts.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = contactsAdapter
-
         }
+
+        mViewBinding.etSearch.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {
+
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                mViewModel.getContactsFromText(p0.toString())
+            }
+
+        })
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
