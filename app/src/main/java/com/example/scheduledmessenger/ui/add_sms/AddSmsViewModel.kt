@@ -103,8 +103,16 @@ class AddSmsViewModel @ViewModelInject constructor(
         _showDatePicker.value = true
     }
 
+    fun hideDatePicker() {
+        _showDatePicker.value = false
+    }
+
     fun showTimePicker() {
         _showTimePicker.value = true
+    }
+
+    fun hideTimePicker() {
+        _showTimePicker.value = false
     }
 
     fun changeDate(year: Int, month: Int, date: Int) {
@@ -112,14 +120,14 @@ class AddSmsViewModel @ViewModelInject constructor(
         selectDate.set(Calendar.MONTH, month)
         selectDate.set(Calendar.DAY_OF_MONTH, date)
         selectedDateText.set(Utils.dateFormatter.format(selectDate.time))
-        _showDatePicker.value = false
+        hideDatePicker()
     }
 
     fun changeTime(hour: Int, minute: Int) {
         selectDate.set(Calendar.HOUR_OF_DAY, hour)
         selectDate.set(Calendar.MINUTE, minute)
         selectedTimeText.set(Utils.timeFormatter.format(selectDate.time))
-        _showTimePicker.value = false
+        hideTimePicker()
     }
 
     fun addSMS() {

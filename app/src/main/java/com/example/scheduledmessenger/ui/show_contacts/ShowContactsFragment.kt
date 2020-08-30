@@ -72,5 +72,8 @@ class ShowContactsFragment : BaseFragment<ShowContactsViewModel, FragmentShowCon
         findNavController().navigateUp()
     }
 
-
+    override fun onDestroy() {
+        hideKeyboard(requireContext(), mViewBinding.root)
+        super.onDestroy()
+    }
 }

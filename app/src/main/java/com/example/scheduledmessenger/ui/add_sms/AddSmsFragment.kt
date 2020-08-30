@@ -3,16 +3,13 @@ package com.example.scheduledmessenger.ui.add_sms
 import android.Manifest
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.DialogInterface
 import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import android.widget.CheckBox
-import android.widget.LinearLayout
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
@@ -175,11 +172,20 @@ class AddSmsFragment : BaseFragment<AddSmsViewModel, FragmentAddSmsBinding>() {
             date.get(Calendar.MONTH),
             date.get(Calendar.DAY_OF_MONTH)
         )
+
+        mDatePicker.setButton(
+            DialogInterface.BUTTON_NEGATIVE,
+            getString(R.string.cancel)
+        ) { _, which ->
+            if (which == DialogInterface.BUTTON_NEGATIVE) {
+                mViewModel.hideDatePicker()
+            }
+        }
         mDatePicker.show()
     }
 
     private fun showTimePicker(date: Calendar) {
-        val mDatePicker = TimePickerDialog(
+        val mTimePicker = TimePickerDialog(
             requireContext(),
             TimePickerDialog.OnTimeSetListener { _, selectedHour, selectedMinute ->
                 mViewModel.changeTime(selectedHour, selectedMinute)
@@ -188,7 +194,16 @@ class AddSmsFragment : BaseFragment<AddSmsViewModel, FragmentAddSmsBinding>() {
             date.get(Calendar.MINUTE),
             false
         )
-        mDatePicker.show()
+
+        mTimePicker.setButton(
+            DialogInterface.BUTTON_NEGATIVE,
+            getString(R.string.cancel)
+        ) { _, which ->
+            if (which == DialogInterface.BUTTON_NEGATIVE) {
+                mViewModel.hideTimePicker()
+            }
+        }
+        mTimePicker.show()
     }
 
     override fun onRequestPermissionsResult(
