@@ -100,6 +100,7 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:$navVersion"
     implementation "androidx.navigation:navigation-ui-ktx:$navVersion"
 
-
+    //Contact icon
+    implementation 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
 
 }
