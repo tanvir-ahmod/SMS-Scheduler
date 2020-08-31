@@ -5,7 +5,9 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import com.example.scheduledmessenger.base.BaseFragment
 import com.example.scheduledmessenger.databinding.FragmentSettingBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SettingFragment : BaseFragment<SettingViewModel, FragmentSettingBinding>() {
 
     override val mViewModel: SettingViewModel by viewModels()
