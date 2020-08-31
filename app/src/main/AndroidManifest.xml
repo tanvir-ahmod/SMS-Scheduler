@@ -25,7 +25,7 @@
         </activity>
 
         <receiver
-            android:name=".utils.BootComplete"
+            android:name=".utils.BootCompleteBroadCastReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>

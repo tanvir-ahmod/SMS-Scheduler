@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class BootComplete : BaseBroadCastReceiver() {
+class BootCompleteBroadCastReceiver : BaseBroadCastReceiver() {
 
     @Inject
     lateinit var scheduleRepository: ScheduleRepository

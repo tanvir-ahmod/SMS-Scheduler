@@ -1,10 +1,25 @@
 package com.example.scheduledmessenger.ui.setting
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import com.example.scheduledmessenger.R
+import androidx.fragment.app.viewModels
+import com.example.scheduledmessenger.base.BaseFragment
+import com.example.scheduledmessenger.databinding.FragmentSettingBinding
 
-class SettingFragment : Fragment(R.layout.fragment_setting)
+class SettingFragment : BaseFragment<SettingViewModel, FragmentSettingBinding>() {
+
+    override val mViewModel: SettingViewModel by viewModels()
+
+    override fun getViewBinding(): FragmentSettingBinding =
+        FragmentSettingBinding.inflate(layoutInflater).apply {
+            viewModel = mViewModel
+        }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        mViewBinding.autoStartContainer.setOnClickListener {
+            gotoAutoStartSetting()
+        }
+    }
+}

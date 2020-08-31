@@ -27,4 +27,7 @@
     <string name="no_data_found">No Data Found</string>
     <string name="no_upcoming_events">No Upcoming Events</string>
     <string name="type_name_to_search">type name to search</string>
+    <string name="settings">Settings</string>
+    <string name="enable_auto_start_title">Enable Auto Start</string>
+    <string name="enable_auto_start_subtitle">if there is an issue with scheduling</string>
 </resources>

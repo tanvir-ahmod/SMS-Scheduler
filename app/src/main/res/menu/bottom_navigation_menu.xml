@@ -1,20 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:id="@+id/homeFragment"
-        android:title="@string/home"
-        android:icon="@drawable/ic_home"/>
+    <item
+        android:id="@+id/homeFragment"
+        android:icon="@drawable/ic_home"
+        android:title="@string/home" />
 
-    <item android:id="@+id/timelineFragment"
-        android:title="@string/timeline"
-        android:icon="@drawable/ic_timeline"/>
+    <item
+        android:id="@+id/timelineFragment"
+        android:icon="@drawable/ic_timeline"
+        android:title="@string/timeline" />
 
-    <item android:id="@+id/logFragment"
-        android:title="@string/log"
-        android:icon="@drawable/ic_log"/>
+    <item
+        android:id="@+id/logFragment"
+        android:icon="@drawable/ic_log"
+        android:title="@string/log" />
 
-    <item android:id="@+id/settingFragment"
-        android:title="@string/profile"
-        android:icon="@drawable/ic_profile"/>
+    <item
+        android:id="@+id/settingFragment"
+        android:icon="@drawable/ic_setting"
+        android:title="@string/settings" />
 
 </menu>
