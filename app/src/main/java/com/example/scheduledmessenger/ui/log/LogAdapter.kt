@@ -1,5 +1,7 @@
 package com.example.scheduledmessenger.ui.log
 
+import android.text.SpannableString
+import android.text.style.UnderlineSpan
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -7,6 +9,8 @@ import com.example.scheduledmessenger.data.source.local.entity.EventLog
 import com.example.scheduledmessenger.databinding.ItemLogBinding
 import com.example.scheduledmessenger.utils.Constants
 import com.example.scheduledmessenger.utils.Utils.logDateFormatter
+import com.example.scheduledmessenger.utils.Utils.timeFormatter
+
 
 class LogAdapter(
     private val onEditClicked: (id: Int, isEditable: Boolean) -> Unit
@@ -27,12 +31,17 @@ class LogAdapter(
             log: EventLog,
             onEditClicked: (id: Int, isEditable: Boolean) -> Unit
         ) {
+            val logEventID = "#${log.eventID}"
+            val underLinedText = SpannableString(logEventID)
+            underLinedText.setSpan(UnderlineSpan(), 1, logEventID.length, 0)
 
-            binding.tvTime.text = logDateFormatter.format(log.timestamp)
+            binding.tvId.text = underLinedText
             binding.tvStatus.text = Constants.LOG_MESSAGE[log.logStatus]!!
+            binding.tvTime.text = timeFormatter.format(log.timestamp)
+            binding.tvDate.text = logDateFormatter.format(log.timestamp)
 
             val isEditable = log.logStatus != Constants.SMS_SENT
-            binding.ivShowDetails.setOnClickListener {
+            binding.tvId.setOnClickListener {
                 onEditClicked(log.eventID, isEditable)
             }
         }

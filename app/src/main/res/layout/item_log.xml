@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginStart="8dp"
     android:layout_marginTop="8dp"
     android:layout_marginEnd="8dp"
@@ -17,14 +17,15 @@
         android:layout_margin="8dp">
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tv_time"
+            android:id="@+id/tv_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="12/05, 07.02 PM"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="#1" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_status"
@@ -33,25 +34,35 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:gravity="center"
-            tools:text="SMS Scheduled"
             android:textColor="@color/colorBlack"
             android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_time"
-            app:layout_constraintEnd_toStartOf="@+id/iv_show_details"
-            app:layout_constraintStart_toEndOf="@+id/tv_time"
-            app:layout_constraintTop_toTopOf="@+id/tv_time" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/tv_time"
+            app:layout_constraintStart_toEndOf="@+id/tv_id"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="SMS Scheduled" />
 
-
-        <ImageView
-            android:id="@+id/iv_show_details"
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="4dp"
-            android:backgroundTint="@android:color/holo_green_dark"
-            android:src="@drawable/ic_show_detail"
+            android:gravity="center"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="12 August" />
 
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_date"
+            tools:text="07.02 PM" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
