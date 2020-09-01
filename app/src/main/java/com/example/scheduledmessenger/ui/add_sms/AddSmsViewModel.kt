@@ -271,7 +271,7 @@ class AddSmsViewModel @ViewModelInject constructor(
             try {
                 viewModelScope.launch {
                     val event = scheduleRepository.getEventById(eventId)
-                    if (event.status != Constants.DISMISSED) {
+                    if (event.status == Constants.PENDING || event.status == Constants.DISMISSED ) {
                         showCancelButton.set(true)
                     }
                     val smsAndPhoneNumbers =

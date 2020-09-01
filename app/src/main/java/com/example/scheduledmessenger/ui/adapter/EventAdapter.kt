@@ -39,12 +39,12 @@ class EventAdapter(private val onEditClicked: (id: Int) -> Unit, private val onD
             val message = smsAndPhoneNumbers.sms.message
             val date =
                 Utils.timelineDateFormatter.format(eventWithSmsAndPhoneNumbers.event.timestamp)
-            val time = Utils.timeFormatter.format(eventWithSmsAndPhoneNumbers.event.timestamp)
+//            val time = Utils.timeFormatter.format(eventWithSmsAndPhoneNumbers.event.timestamp)
 
             binding.tvTo.text = phoneNumbers
             binding.tvMessage.text = message
             binding.tvDate.text = date
-            binding.tvTime.text = time
+            binding.tvTime.text = Constants.EVENT_STATUS[eventWithSmsAndPhoneNumbers.event.status]
 
             binding.ivDelete.setOnClickListener {
                 onDeleteClicked(eventWithSmsAndPhoneNumbers.event)

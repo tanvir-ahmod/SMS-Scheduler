@@ -22,4 +22,13 @@ object Constants {
             SMS_CANCELED to "SMS dismissed",
             SMS_FAILED to "SMS failed"
         )
+
+    val EVENT_STATUS: HashMap<Int, String> =
+        hashMapOf(
+            PENDING to "PENDING",
+            SENT to "SENT",
+            SMS_MODIFIED to "SMS modified",
+            FAILED to "FAILED",
+            DISMISSED to "DISMISSED"
+        )
 }
