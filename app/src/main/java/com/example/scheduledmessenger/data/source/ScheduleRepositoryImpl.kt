@@ -64,4 +64,8 @@ class ScheduleRepositoryImpl @Inject constructor(
     override suspend fun deleteEvent(event: Event) =
         withContext(Dispatchers.IO) { eventsDataSource.deleteEvent(event) }
 
+    override suspend fun getFailedEvents(timestamp: Long): List<Event> = withContext(Dispatchers.IO){
+        eventsDataSource.getFailedEvents(timestamp)
+    }
+
 }
