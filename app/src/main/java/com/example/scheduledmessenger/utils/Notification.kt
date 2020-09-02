@@ -13,7 +13,10 @@ import com.example.scheduledmessenger.R
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
-class Notification @Inject constructor(@ApplicationContext private val context: Context) {
+class Notification @Inject constructor(
+    @ApplicationContext private val context: Context,
+    private val sharedPrefManager: SharedPrefManager
+) {
     private val notificationManager = NotificationManagerCompat.from(context)
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -31,6 +34,9 @@ class Notification @Inject constructor(@ApplicationContext private val context: 
     }
 
     fun showNotification(title: String) {
+        if (!sharedPrefManager.getNotificationStatus()) {
+            return
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createChannel()
         }
