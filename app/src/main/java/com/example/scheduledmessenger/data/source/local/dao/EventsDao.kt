@@ -22,6 +22,9 @@ interface EventsDao {
     @Delete
     suspend fun deleteEvent(event: Event)
 
+    @Query("DELETE FROM EVENTS WHERE id = :id")
+    suspend fun deleteEventById(id: Int)
+
     suspend fun updateEventWithTimeStamp(event: Event): Int = updateEvent(event.apply {
         updatedAt = System.currentTimeMillis()
     })
@@ -45,6 +48,9 @@ interface EventsDao {
     fun getUpcomingSMSEvents(timestamp: Long): Flow<List<EventWithSmsAndPhoneNumbers>>
 
     @Query("SELECT * FROM EVENTS WHERE timestamp < :timestamp AND status = :pendingStatus ORDER BY TIMESTAMP DESC")
-    suspend fun getFailedEvents(timestamp: Long, pendingStatus: Int = Constants.PENDING): List<Event>
+    suspend fun getFailedEvents(
+        timestamp: Long,
+        pendingStatus: Int = Constants.PENDING
+    ): List<Event>
 
 }

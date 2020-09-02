@@ -58,5 +58,8 @@ class ScheduleLocalDataSource @Inject constructor(
     suspend fun deleteEvent(event: Event) =
         eventsDao.deleteEvent(event)
 
+    suspend fun deleteEventById(id: Int) =
+        eventsDao.deleteEventById(id)
+
     suspend fun getFailedEvents(timestamp: Long) = eventsDao.getFailedEvents(timestamp)
 }

@@ -17,10 +17,10 @@ class MainViewModel @ViewModelInject constructor(
 
     val contactNumber = MutableLiveData<String>()
 
-    fun deleteEvent(event: Event) {
+    fun deleteEvent(id: Int) {
         viewModelScope.launch {
-            alarmManager.dismissAlarm(event.id)
-            scheduleRepository.deleteEvent(event)
+            alarmManager.dismissAlarm(id)
+            scheduleRepository.deleteEventById(id)
         }
     }
 }

@@ -10,7 +10,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.scheduledmessenger.R
 import com.example.scheduledmessenger.base.BaseFragment
-import com.example.scheduledmessenger.data.source.local.entity.Event
 import com.example.scheduledmessenger.databinding.FragmentTimelineBinding
 import com.example.scheduledmessenger.ui.MainViewModel
 import com.example.scheduledmessenger.ui.adapter.EventAdapter
@@ -51,7 +50,7 @@ class TimelineFragment : BaseFragment<TimelineViewModel, FragmentTimelineBinding
     }
 
 
-    private fun onDeleteClicked(event: Event) {
+    private fun onDeleteClicked(eventId: Int) {
 
         AlertDialog.Builder(requireContext())
             .setTitle(requireContext().resources.getString(R.string.delete_entry_title))
@@ -59,7 +58,7 @@ class TimelineFragment : BaseFragment<TimelineViewModel, FragmentTimelineBinding
             .setPositiveButton(
                 requireContext().resources.getString(R.string.delete_yes)
             ) { _, _ ->
-                sharedViewModel.deleteEvent(event)
+                sharedViewModel.deleteEvent(eventId)
             }
             .setNegativeButton(
                 requireContext().resources.getString(R.string.delete_no),
