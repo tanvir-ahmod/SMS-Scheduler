@@ -2,6 +2,8 @@ package com.example.scheduledmessenger.utils
 
 
 object Constants {
+    const val NOTIFICATION_CHANNEL_ID = "100"
+    const val NOTIFICATION_CHANNEL_NAME = "schedule_messenger"
     const val ID = "id"
     const val PENDING = 0
     const val SENT = 1

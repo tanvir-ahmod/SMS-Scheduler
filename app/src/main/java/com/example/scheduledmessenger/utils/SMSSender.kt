@@ -11,6 +11,7 @@ import android.widget.Toast
 import com.example.scheduledmessenger.data.source.ScheduleRepository
 import com.example.scheduledmessenger.data.source.local.entity.EventLog
 import com.example.scheduledmessenger.data.source.local.entity.PhoneNumber
+import com.example.scheduledmessenger.utils.Constants.LOG_MESSAGE
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -19,7 +20,8 @@ import javax.inject.Inject
 
 class SMSSender @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val scheduleRepository: ScheduleRepository
+    private val scheduleRepository: ScheduleRepository,
+    private val notification: Notification
 ) {
     private val SENT = "SMS_SENT"
     private val DELIVERED = "SMS_DELIVERED"
@@ -41,6 +43,7 @@ class SMSSender @Inject constructor(
                     smsAndPhoneNumbers.sms.message
                 )
 
+                notification.showNotification(LOG_MESSAGE[Constants.SMS_SENT]!!)
                 updateDbWithSuccess(eventId)
             }
         } catch (e: Exception) {
@@ -55,6 +58,7 @@ class SMSSender @Inject constructor(
                         eventID = eventId
                     )
                 )
+                notification.showNotification(LOG_MESSAGE[Constants.SMS_FAILED]!!)
             }
         }
     }
@@ -84,7 +88,7 @@ class SMSSender @Inject constructor(
         )
 
         //---when the SMS has been sent---
-        context.registerReceiver(object : BroadcastReceiver() {
+        /*context.registerReceiver(object : BroadcastReceiver() {
             override fun onReceive(arg0: Context?, arg1: Intent?) {
                 when (resultCode) {
                     Activity.RESULT_OK -> Toast.makeText(
@@ -109,7 +113,7 @@ class SMSSender @Inject constructor(
                     ).show()
                 }
             }
-        }, IntentFilter(SENT))
+        }, IntentFilter(SENT))*/
 
         //---when the SMS has been delivered---
         context.registerReceiver(object : BroadcastReceiver() {
