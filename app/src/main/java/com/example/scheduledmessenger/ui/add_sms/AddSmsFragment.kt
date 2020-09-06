@@ -127,26 +127,24 @@ class AddSmsFragment : BaseFragment<AddSmsViewModel, FragmentAddSmsBinding>() {
         })
 
         mViewModel.showDatePicker.observe(
-            viewLifecycleOwner, Observer { date ->
-                date?.let {
+            viewLifecycleOwner, Observer {
+                it.getContentIfNotHandled()?.let {date->
                     showDatePicker(date)
                 }
             })
 
         mViewModel.showTimePicker.observe(
-            viewLifecycleOwner, Observer { date ->
-                date?.let {
-                    showTimePicker(date)
+            viewLifecycleOwner, Observer {
+                it.getContentIfNotHandled()?.let {time->
+                    showTimePicker(time)
                 }
             })
 
         mViewModel.popBack.observe(
-            viewLifecycleOwner, Observer { date ->
-                date?.let { isPopBack ->
-                    if (isPopBack) {
-                        hideKeyboard(requireContext(), mViewBinding.root)
-                        findNavController().navigateUp()
-                    }
+            viewLifecycleOwner, Observer {
+                it.getContentIfNotHandled()?.let {
+                    hideKeyboard(requireContext(), mViewBinding.root)
+                    findNavController().navigateUp()
                 }
             })
 
@@ -172,15 +170,6 @@ class AddSmsFragment : BaseFragment<AddSmsViewModel, FragmentAddSmsBinding>() {
             date.get(Calendar.MONTH),
             date.get(Calendar.DAY_OF_MONTH)
         )
-
-        mDatePicker.setButton(
-            DialogInterface.BUTTON_NEGATIVE,
-            getString(R.string.cancel)
-        ) { _, which ->
-            if (which == DialogInterface.BUTTON_NEGATIVE) {
-                mViewModel.hideDatePicker()
-            }
-        }
         mDatePicker.show()
     }
 
@@ -194,15 +183,6 @@ class AddSmsFragment : BaseFragment<AddSmsViewModel, FragmentAddSmsBinding>() {
             date.get(Calendar.MINUTE),
             false
         )
-
-        mTimePicker.setButton(
-            DialogInterface.BUTTON_NEGATIVE,
-            getString(R.string.cancel)
-        ) { _, which ->
-            if (which == DialogInterface.BUTTON_NEGATIVE) {
-                mViewModel.hideTimePicker()
-            }
-        }
         mTimePicker.show()
     }
 

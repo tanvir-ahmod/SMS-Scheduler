@@ -22,11 +22,11 @@ import com.example.scheduledmessenger.data.source.local.entity.PhoneNumber
 import com.example.scheduledmessenger.data.source.local.entity.SMS
 import com.example.scheduledmessenger.utils.Constants
 import com.example.scheduledmessenger.utils.ManagerAlarm
+import com.example.scheduledmessenger.utils.TriggeredEvent
 import com.example.scheduledmessenger.utils.Utils
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class AddSmsViewModel @ViewModelInject constructor(
@@ -52,8 +52,8 @@ class AddSmsViewModel @ViewModelInject constructor(
     val messageError = ObservableField<String>()
     val receiverError = ObservableField<String>()
 
-    private val _popBack = MutableLiveData<Boolean>(false)
-    val popBack: LiveData<Boolean> = _popBack
+    private val _popBack = MutableLiveData<TriggeredEvent<Boolean>>()
+    val popBack: LiveData<TriggeredEvent<Boolean>> = _popBack
 
     private val _actionBarText = MutableLiveData<String>("Add SMS")
     val actionBarText: LiveData<String> = _actionBarText
@@ -61,21 +61,11 @@ class AddSmsViewModel @ViewModelInject constructor(
     private val _receiverNumbers = MutableLiveData<List<String>>()
     val receiverNumbers: LiveData<List<String>> = _receiverNumbers
 
-    private val _showDatePicker = MutableLiveData<Boolean>(false)
-    val showDatePicker: LiveData<Calendar> = _showDatePicker.switchMap { isShow ->
-        val datePicker = MutableLiveData<Calendar>(null)
-        if (isShow)
-            datePicker.value = selectDate
-        return@switchMap datePicker
-    }
+    private val _showDatePicker = MutableLiveData<TriggeredEvent<Calendar>>()
+    val showDatePicker: LiveData<TriggeredEvent<Calendar>> = _showDatePicker
 
-    private val _showTimePicker = MutableLiveData<Boolean>(false)
-    val showTimePicker: LiveData<Calendar> = _showTimePicker.switchMap { isShow ->
-        val timePicker = MutableLiveData<Calendar>(null)
-        if (isShow)
-            timePicker.value = selectDate
-        return@switchMap timePicker
-    }
+    private val _showTimePicker = MutableLiveData<TriggeredEvent<Calendar>>()
+    val showTimePicker: LiveData<TriggeredEvent<Calendar>> = _showTimePicker
 
     private val _availableSims = MutableLiveData<List<CheckBox>>()
     val availableSims: LiveData<List<CheckBox>> = _availableSims
@@ -100,19 +90,11 @@ class AddSmsViewModel @ViewModelInject constructor(
     }
 
     fun showDatePicker() {
-        _showDatePicker.value = true
-    }
-
-    fun hideDatePicker() {
-        _showDatePicker.value = false
+        _showDatePicker.value = TriggeredEvent(selectDate)
     }
 
     fun showTimePicker() {
-        _showTimePicker.value = true
-    }
-
-    fun hideTimePicker() {
-        _showTimePicker.value = false
+        _showTimePicker.value = TriggeredEvent(selectDate)
     }
 
     fun changeDate(year: Int, month: Int, date: Int) {
@@ -120,19 +102,17 @@ class AddSmsViewModel @ViewModelInject constructor(
         selectDate.set(Calendar.MONTH, month)
         selectDate.set(Calendar.DAY_OF_MONTH, date)
         selectedDateText.set(Utils.dateFormatter.format(selectDate.time))
-        hideDatePicker()
     }
 
     fun changeTime(hour: Int, minute: Int) {
         selectDate.set(Calendar.HOUR_OF_DAY, hour)
         selectDate.set(Calendar.MINUTE, minute)
         selectedTimeText.set(Utils.timeFormatter.format(selectDate.time))
-        hideTimePicker()
     }
 
     fun addSMS() {
         if (!isFormEditable.get()!!) {
-            _popBack.value = true
+            _popBack.value = TriggeredEvent(true)
             return
         }
 
@@ -179,7 +159,7 @@ class AddSmsViewModel @ViewModelInject constructor(
 
             showLoader.value = false
             showMessage.value = "Event Updated"
-            _popBack.value = true
+            popBack()
         }
     }
 
@@ -216,9 +196,13 @@ class AddSmsViewModel @ViewModelInject constructor(
             )
             showLoader.value = false
             showMessage.value = "Event Added"
-            _popBack.value = true
+            popBack()
 
         }
+    }
+
+    private fun popBack(){
+        _popBack.value = TriggeredEvent(true)
     }
 
     fun dismissAlarm() {
@@ -239,7 +223,7 @@ class AddSmsViewModel @ViewModelInject constructor(
 
             showLoader.value = false
             showMessage.value = "Event Cancelled"
-            _popBack.value = true
+            popBack()
         }
     }
 
@@ -271,7 +255,7 @@ class AddSmsViewModel @ViewModelInject constructor(
             try {
                 viewModelScope.launch {
                     val event = scheduleRepository.getEventById(eventId)
-                    if (event.status == Constants.PENDING || event.status == Constants.DISMISSED ) {
+                    if (event.status == Constants.PENDING || event.status == Constants.DISMISSED) {
                         showCancelButton.set(true)
                     }
                     val smsAndPhoneNumbers =
