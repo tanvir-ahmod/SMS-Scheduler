@@ -32,23 +32,23 @@ class TimelineViewModel @ViewModelInject constructor(
             allEvents.collect { events ->
                 val timelineData = mutableListOf<EventModel>()
                 for (event in events) {
-                    val names =
-                        contactsRepository.getContactNamesByPhoneNumbers(event.smsAndPhoneNumbers.phoneNumbers)
+                    event.smsAndPhoneNumbers?.let { phone ->
+                        val names =
+                            contactsRepository.getContactNamesByPhoneNumbers(phone.phoneNumbers)
 
-                    timelineData.add(
-                        EventModel(
-                            event.event.id,
-                            names,
-                            event.smsAndPhoneNumbers.sms.message,
-                            event.event.timestamp,
-                            event.event.status
+                        timelineData.add(
+                            EventModel(
+                                event.event.id,
+                                names,
+                                event.smsAndPhoneNumbers.sms.message,
+                                event.event.timestamp,
+                                event.event.status
+                            )
                         )
-                    )
-
+                    }
                 }
                 _timeLineData.value = timelineData
             }
-
         }
 
     }

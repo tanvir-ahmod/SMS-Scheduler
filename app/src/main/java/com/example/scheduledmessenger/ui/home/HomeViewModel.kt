@@ -41,18 +41,21 @@ class HomeViewModel @ViewModelInject constructor(
             upcomingEvents.collect { events ->
                 val upcomingEventData = mutableListOf<EventModel>()
                 for (event in events) {
-                    val names =
-                        contactsRepository.getContactNamesByPhoneNumbers(event.smsAndPhoneNumbers.phoneNumbers)
+                    event.smsAndPhoneNumbers?.let {phone->
+                        val names =
+                            contactsRepository.getContactNamesByPhoneNumbers(phone.phoneNumbers)
 
-                    upcomingEventData.add(
-                        EventModel(
-                            event.event.id,
-                            names,
-                            event.smsAndPhoneNumbers.sms.message,
-                            event.event.timestamp,
-                            event.event.status
+                        upcomingEventData.add(
+                            EventModel(
+                                event.event.id,
+                                names,
+                                event.smsAndPhoneNumbers.sms.message,
+                                event.event.timestamp,
+                                event.event.status
+                            )
                         )
-                    )
+                    }
+
                 }
                 _upcomingEvents.value = upcomingEventData
             }

@@ -10,5 +10,5 @@ data class EventWithSmsAndPhoneNumbers(
         entityColumn = "event_id",
         entity = SMS::class
     )
-    val smsAndPhoneNumbers: SmsAndPhoneNumbers
+    val smsAndPhoneNumbers: SmsAndPhoneNumbers?
 )
