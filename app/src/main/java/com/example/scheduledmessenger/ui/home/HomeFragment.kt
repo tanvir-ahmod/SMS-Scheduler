@@ -75,6 +75,8 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
                 } else {
                     mViewModel.getUpcomingEvents()
                 }
+            } else {
+                mViewBinding.tvNoDataFound.visibility = View.VISIBLE
             }
         })
     }
