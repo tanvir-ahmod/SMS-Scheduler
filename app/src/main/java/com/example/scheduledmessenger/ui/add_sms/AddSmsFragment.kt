@@ -101,7 +101,6 @@ class AddSmsFragment : BaseFragment<AddSmsViewModel, FragmentAddSmsBinding>() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         mViewModel.setEventId(args.eventId)
-        mViewModel.setIsEditable(args.isEditable)
         setUpObservers()
     }
 

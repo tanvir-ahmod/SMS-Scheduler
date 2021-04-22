@@ -36,8 +36,8 @@ class LogFragment : BaseFragment<LogViewModel, FragmentLogBinding>() {
         })
     }
 
-    private fun onEditClicked(id: Int, isEditable : Boolean) {
-        val action = LogFragmentDirections.actionLogFragmentToAddSmsFragment(id, isEditable)
+    private fun onEditClicked(id: Int) {
+        val action = LogFragmentDirections.actionLogFragmentToAddSmsFragment(id)
         findNavController().navigate(action)
     }
 

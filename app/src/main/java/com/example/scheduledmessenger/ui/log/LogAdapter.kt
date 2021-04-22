@@ -13,7 +13,7 @@ import com.example.scheduledmessenger.utils.Utils.timeFormatter
 
 
 class LogAdapter(
-    private val onEditClicked: (id: Int, isEditable: Boolean) -> Unit
+    private val onEditClicked: (id: Int) -> Unit
 ) :
     RecyclerView.Adapter<LogAdapter.LogHolder>() {
 
@@ -29,7 +29,7 @@ class LogAdapter(
 
         fun bindData(
             log: EventLog,
-            onEditClicked: (id: Int, isEditable: Boolean) -> Unit
+            onEditClicked: (id: Int) -> Unit
         ) {
             val logEventID = "#${log.eventID}"
             val underLinedText = SpannableString(logEventID)
@@ -40,9 +40,8 @@ class LogAdapter(
             binding.tvTime.text = timeFormatter.format(log.timestamp)
             binding.tvDate.text = logDateFormatter.format(log.timestamp)
 
-            val isEditable = log.logStatus != Constants.SMS_SENT
             binding.tvId.setOnClickListener {
-                onEditClicked(log.eventID, isEditable)
+                onEditClicked(log.eventID)
             }
         }
     }

@@ -201,7 +201,7 @@ class AddSmsViewModel @ViewModelInject constructor(
         }
     }
 
-    private fun popBack(){
+    private fun popBack() {
         _popBack.value = TriggeredEvent(true)
     }
 
@@ -255,9 +255,7 @@ class AddSmsViewModel @ViewModelInject constructor(
             try {
                 viewModelScope.launch {
                     val event = scheduleRepository.getEventById(eventId)
-                    if (event.status == Constants.PENDING || event.status == Constants.DISMISSED) {
-                        showCancelButton.set(true)
-                    }
+
                     val smsAndPhoneNumbers =
                         scheduleRepository.getSmsAndPhoneNumbersWithEventId(eventId)
 
@@ -273,6 +271,13 @@ class AddSmsViewModel @ViewModelInject constructor(
                     selectedTimeText.set(Utils.timeFormatter.format(event.timestamp))
 
                     setSimChecked(smsAndPhoneNumbers.sms.subscriptionID)
+
+                    if (event.status == Constants.SENT) {
+                        setAsNotEditable()
+                    }
+                    else if (event.status == Constants.PENDING || event.status == Constants.DISMISSED) {
+                        showCancelButton.set(true)
+                    }
                 }
             } catch (e: Exception) {
                 showMessage.value = e.message
@@ -280,10 +285,9 @@ class AddSmsViewModel @ViewModelInject constructor(
         }
     }
 
-    fun setIsEditable(isEditable: Boolean) {
-        isFormEditable.set(isEditable)
-        if (!isEditable)
-            _actionBarText.value = "View SMS"
+    private fun setAsNotEditable() {
+        isFormEditable.set(false)
+        _actionBarText.value = "View SMS"
     }
 
     fun showSimCards() {
