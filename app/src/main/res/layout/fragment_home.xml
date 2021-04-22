@@ -4,20 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorDashboardBackground"
+    android:background="@color/colorHomeBackground"
+    android:padding="16dp"
     tools:context=".ui.home.HomeFragment">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:gravity="center"
-        android:text="@string/scheduled_sms"
-        android:textColor="@color/colorWhite"
+        android:text="@string/summary"
+        android:textColor="@color/colorBlack"
         android:textSize="18sp"
-        android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.card.MaterialCardView
@@ -157,8 +155,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="40dp"
-        android:background="@color/colorWhite"
+        android:layout_marginTop="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cv_total">
 
@@ -166,7 +163,6 @@
             android:id="@+id/tv_upcoming_event_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
             android:layout_marginTop="20dp"
             android:text="@string/upcoming_events"
             android:textColor="@color/colorBlack"
@@ -178,7 +174,7 @@
             android:id="@+id/rv_upcoming_events"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_upcoming_event_title" />
 
@@ -187,9 +183,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:visibility="gone"
             android:text="@string/no_upcoming_events"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:visibility="gone" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -201,8 +197,10 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:src="@drawable/ic_add"
+        app:backgroundTint="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:tint="@color/colorWhite" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

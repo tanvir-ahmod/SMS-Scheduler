@@ -35,4 +35,5 @@
     <string name="enable_notification_vibration">Enable notification\'s vibration</string>
     <string name="status_colon">Status:</string>
     <string name="datetime_colon">DateTime:</string>
+    <string name="summary">Summary</string>
 </resources>
