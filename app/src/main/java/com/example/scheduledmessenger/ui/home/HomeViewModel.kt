@@ -30,18 +30,30 @@ class HomeViewModel @ViewModelInject constructor(
     private val _upcomingEvents = MutableLiveData<List<EventModel>>()
     val upcomingEvents: LiveData<List<EventModel>> = _upcomingEvents
 
+    private val _hasUpcomingEvents = MutableLiveData<Boolean>()
+    val hasUpcomingEvents: LiveData<Boolean> = _hasUpcomingEvents
+
     init {
         updateFailStatus()
-        getUpcomingEvents()
+        checkUpcomingEventExists()
     }
 
-    private fun getUpcomingEvents() {
+    private fun checkUpcomingEventExists() {
+        viewModelScope.launch {
+            val upcomingEvents = scheduleRepository.getUpcomingSMSEvents(System.currentTimeMillis())
+            upcomingEvents.collect {
+                _hasUpcomingEvents.value = it.isNotEmpty()
+            }
+        }
+    }
+
+    fun getUpcomingEvents() {
         viewModelScope.launch {
             val upcomingEvents = scheduleRepository.getUpcomingSMSEvents(System.currentTimeMillis())
             upcomingEvents.collect { events ->
                 val upcomingEventData = mutableListOf<EventModel>()
                 for (event in events) {
-                    event.smsAndPhoneNumbers?.let {phone->
+                    event.smsAndPhoneNumbers?.let { phone ->
                         val names =
                             contactsRepository.getContactNamesByPhoneNumbers(phone.phoneNumbers)
 

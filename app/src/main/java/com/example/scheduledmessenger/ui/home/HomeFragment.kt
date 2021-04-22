@@ -24,6 +24,7 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
     private val upcomingEventAdapter = EventAdapter(this::onEditClicked, this::onDeleteClicked)
 
     private val sendSmsPermissionCode = 100
+    private val readContactPermissionCode = 200
 
     private val sharedViewModel: MainViewModel by activityViewModels()
 
@@ -36,11 +37,12 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
         mViewBinding.rvUpcomingEvents.layoutManager = LinearLayoutManager(requireContext())
         mViewBinding.rvUpcomingEvents.adapter = upcomingEventAdapter
         mViewBinding.btnAdd.setOnClickListener {
-            if (isGrantedSendSMSPermission()) {
+            if (!isGrantedSendSMSPermission()) {
                 requestSendSmsPermission()
             } else
                 gotoAddSmsFragment()
         }
+
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -66,12 +68,21 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
             mViewBinding.tvNoDataFound.visibility =
                 if (events.isEmpty()) View.VISIBLE else View.GONE
         })
+        mViewModel.hasUpcomingEvents.observe(viewLifecycleOwner, Observer { hasEvents ->
+            if (hasEvents) {
+                if (!isGrantedReadContactPermission()) {
+                    requestReadContactPermission()
+                } else {
+                    mViewModel.getUpcomingEvents()
+                }
+            }
+        })
     }
 
     private fun isGrantedSendSMSPermission(): Boolean = ContextCompat.checkSelfPermission(
         requireContext(),
         Manifest.permission.SEND_SMS
-    ) != PackageManager.PERMISSION_GRANTED
+    ) == PackageManager.PERMISSION_GRANTED
 
     private fun requestSendSmsPermission() {
         requestPermissions(
@@ -93,6 +104,16 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
                 gotoAddSmsFragment()
             } else {
                 mViewModel.showMessage.value = "Send message permission required"
+            }
+        }
+
+        if (requestCode == readContactPermissionCode) {
+            if (grantResults.isNotEmpty()
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED
+            ) {
+                mViewModel.getUpcomingEvents()
+            } else {
+                mViewModel.showMessage.value = "Read permission required to show upcoming events!"
             }
         }
     }
@@ -122,4 +143,18 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
             .setIcon(android.R.drawable.ic_dialog_alert)
             .show()
     }
+
+    private fun isGrantedReadContactPermission(): Boolean = ContextCompat.checkSelfPermission(
+        requireContext(),
+        Manifest.permission.READ_CONTACTS
+    ) == PackageManager.PERMISSION_GRANTED
+
+    private fun requestReadContactPermission() {
+        requestPermissions(
+            arrayOf(Manifest.permission.READ_CONTACTS),
+            readContactPermissionCode
+        )
+    }
+
+
 }
