@@ -1,15 +1,13 @@
 package com.example.scheduledmessenger.ui.add_sms
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import android.content.DialogInterface
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
+import android.view.*
+import android.view.View.OnTouchListener
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
@@ -61,13 +59,23 @@ class AddSmsFragment : BaseFragment<AddSmsViewModel, FragmentAddSmsBinding>() {
             mViewModel.showSimCards()
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun initListeners() {
-        mViewBinding.ivShowContacts.setOnClickListener {
-            if (isGrantedReadContactPermission()) {
-                requestReadContactPermission()
-            } else
-                gotoContactFragment()
-        }
+
+        mViewBinding.tvTo.setOnTouchListener(OnTouchListener { _, event ->
+            val DRAWABLE_RIGHT = 2
+            if (event.action == MotionEvent.ACTION_UP) {
+                if (mViewBinding.tvTo.compoundDrawables[DRAWABLE_RIGHT] != null)
+                    if (event.rawX >= mViewBinding.tvTo.right - mViewBinding.tvTo.compoundDrawables[DRAWABLE_RIGHT].bounds.width()) {
+                        if (isGrantedReadContactPermission()) {
+                            requestReadContactPermission()
+                        } else
+                            gotoContactFragment()
+                        return@OnTouchListener true
+                    }
+            }
+            false
+        })
     }
 
     private fun isGrantedReadContactPermission(): Boolean = ContextCompat.checkSelfPermission(
@@ -127,14 +135,14 @@ class AddSmsFragment : BaseFragment<AddSmsViewModel, FragmentAddSmsBinding>() {
 
         mViewModel.showDatePicker.observe(
             viewLifecycleOwner, Observer {
-                it.getContentIfNotHandled()?.let {date->
+                it.getContentIfNotHandled()?.let { date ->
                     showDatePicker(date)
                 }
             })
 
         mViewModel.showTimePicker.observe(
             viewLifecycleOwner, Observer {
-                it.getContentIfNotHandled()?.let {time->
+                it.getContentIfNotHandled()?.let { time ->
                     showTimePicker(time)
                 }
             })
@@ -156,6 +164,19 @@ class AddSmsFragment : BaseFragment<AddSmsViewModel, FragmentAddSmsBinding>() {
             for (sim in sims) {
                 mViewBinding.llSimInfoContainer.addView(sim)
             }
+        })
+        mViewModel.isVisibleContactIcon.observe(viewLifecycleOwner, Observer { isVisible ->
+            if (isVisible)
+                mViewBinding.tvTo.setCompoundDrawablesWithIntrinsicBounds(
+                    0,
+                    0,
+                    R.drawable.ic_contact,
+                    0
+                )
+            else
+                mViewBinding.tvTo.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
+
+
         })
     }
 

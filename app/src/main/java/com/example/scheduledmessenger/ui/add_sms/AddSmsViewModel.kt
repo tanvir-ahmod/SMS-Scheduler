@@ -11,7 +11,6 @@ import androidx.databinding.ObservableField
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import com.example.scheduledmessenger.R
 import com.example.scheduledmessenger.base.BaseViewModel
@@ -70,6 +69,9 @@ class AddSmsViewModel @ViewModelInject constructor(
     private val _availableSims = MutableLiveData<List<CheckBox>>()
     val availableSims: LiveData<List<CheckBox>> = _availableSims
     private val sims: ArrayList<CheckBox> = arrayListOf()
+
+    private val _isVisibleContactIcon = MutableLiveData<Boolean>(true)
+    val isVisibleContactIcon: LiveData<Boolean> = _isVisibleContactIcon
 
     fun addReceiverNumber() {
         if (!isFormEditable.get()!!)
@@ -287,6 +289,7 @@ class AddSmsViewModel @ViewModelInject constructor(
 
     private fun setAsNotEditable() {
         isFormEditable.set(false)
+        _isVisibleContactIcon.value = false
         _actionBarText.value = "View SMS"
     }
 

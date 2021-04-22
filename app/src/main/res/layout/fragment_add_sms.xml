@@ -98,11 +98,11 @@
             android:src="@drawable/ic_add_black"
             android:visibility="@{viewModel.etReceiverNumber.isEmpty() ? View.GONE : View.VISIBLE}"
             app:layout_constraintBottom_toBottomOf="@+id/tv_to"
-            app:layout_constraintEnd_toStartOf="@+id/iv_show_contacts"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/tv_to"
             app:layout_constraintTop_toTopOf="@+id/tv_to" />
 
-        <androidx.appcompat.widget.AppCompatImageView
+       <!-- <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_show_contacts"
             android:layout_width="25dp"
             android:layout_height="0dp"
@@ -113,7 +113,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/tv_to"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/iv_add_receiver"
-            app:layout_constraintTop_toTopOf="@+id/tv_to" />
+            app:layout_constraintTop_toTopOf="@+id/tv_to" />-->
 
 
         <com.google.android.material.chip.ChipGroup
