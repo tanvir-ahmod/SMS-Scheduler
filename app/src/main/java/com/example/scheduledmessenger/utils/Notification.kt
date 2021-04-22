@@ -27,7 +27,7 @@ class Notification @Inject constructor(
         val mChannel = NotificationChannel(channelID, name, importance)
         mChannel.enableLights(true)
         mChannel.lightColor = Color.RED
-        mChannel.enableVibration(true)
+        mChannel.enableVibration(sharedPrefManager.getNotificationVibrationStatus())
         mChannel.vibrationPattern = longArrayOf(100, 200, 300, 400, 500, 400, 300, 200, 400)
         mChannel.setShowBadge(false)
         notificationManager.createNotificationChannel(mChannel)

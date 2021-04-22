@@ -32,6 +32,7 @@
     <string name="enable_auto_start_subtitle">if there is an issue with scheduling</string>
     <string name="about">About</string>
     <string name="enable_event_notification">Enable event notification</string>
+    <string name="enable_notification_vibration">Enable notification\'s vibration</string>
     <string name="status_colon">Status:</string>
     <string name="datetime_colon">DateTime:</string>
 </resources>

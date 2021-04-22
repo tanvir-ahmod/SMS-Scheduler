@@ -19,6 +19,7 @@ class SettingViewModel @ViewModelInject constructor(
     val isShowAutoStart = ObservableField<Boolean>(false)
     val versionNumber = ObservableField<String>("")
     val isNotificationChecked = ObservableField<Boolean>(sharedPrefManager.getNotificationStatus())
+    val isNotificationVibrationChecked = ObservableField<Boolean>(sharedPrefManager.getNotificationVibrationStatus())
 
     init {
         setVersionNumber()
@@ -40,5 +41,10 @@ class SettingViewModel @ViewModelInject constructor(
     fun onNotificationCheckedChanged(value: Boolean) {
         isNotificationChecked.set(value)
         sharedPrefManager.saveNotificationStatus(value)
+    }
+
+    fun onNotificationVibrationCheckedChanged(value: Boolean) {
+        isNotificationVibrationChecked.set(value)
+        sharedPrefManager.saveNotificationVibrationStatus(value)
     }
 }

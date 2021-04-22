@@ -54,8 +54,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="8dp">
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
@@ -72,6 +72,38 @@
                 android:layout_height="match_parent"
                 android:checked="@{viewModel.isNotificationChecked}"
                 android:onCheckedChanged="@{(switch, checked) -> viewModel.onNotificationCheckedChanged(checked)}"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorGray"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="8dp"
+            android:visibility="@{viewModel.isNotificationChecked ? View.VISIBLE : View.GONE}">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/enable_notification_vibration"
+                android:textColor="@color/colorBlack"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:checked="@{viewModel.isNotificationVibrationChecked}"
+                android:onCheckedChanged="@{(switch, checked) -> viewModel.onNotificationVibrationCheckedChanged(checked)}"
                 app:layout_constraintEnd_toEndOf="parent" />
 
             <View

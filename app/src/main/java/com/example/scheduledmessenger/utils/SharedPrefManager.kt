@@ -11,6 +11,7 @@ class SharedPrefManager @Inject constructor(@ApplicationContext private val cont
 
     companion object {
         private const val SHOW_NOTIFICATION = "show_notification"
+        private const val ENABLE_NOTIFICATION_VIBRATION = "enable_notification_vibration"
         private const val SHARED_PREF_NAME = "scheduled_messenger"
     }
 
@@ -19,5 +20,11 @@ class SharedPrefManager @Inject constructor(@ApplicationContext private val cont
     }
 
     fun getNotificationStatus(): Boolean = sharedPref.getBoolean(SHOW_NOTIFICATION, true)
+
+    fun saveNotificationVibrationStatus(value: Boolean) {
+        sharedPref.edit().putBoolean(ENABLE_NOTIFICATION_VIBRATION, value).apply()
+    }
+
+    fun getNotificationVibrationStatus(): Boolean = sharedPref.getBoolean(ENABLE_NOTIFICATION_VIBRATION, true)
 
 }
