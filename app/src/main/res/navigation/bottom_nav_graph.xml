@@ -50,5 +50,5 @@
     <fragment
         android:id="@+id/showContactsFragment"
         android:name="com.example.scheduledmessenger.ui.show_contacts.ShowContactsFragment"
-        android:label="ShowContactsFragment" />
+        android:label="Show Contacts" />
 </navigation>
