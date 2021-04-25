@@ -9,13 +9,13 @@
 
         <variable
             name="viewModel"
-            type="com.example.scheduledmessenger.ui.settings.SettingsViewModel" />
+            type="com.example.smsScheduler.ui.settings.SettingsViewModel" />
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="16dp"
+        android:padding="8dp"
         android:orientation="vertical"
         tools:context=".ui.home.HomeFragment">
 
@@ -24,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="8dp"
+            android:padding="4dp"
             android:visibility="@{viewModel.isShowAutoStart() ? View.VISIBLE : View.GONE}">
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -46,7 +46,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="16dp"
-                android:background="@color/colorGray"
+                android:background="@color/colorDashboardBackground"
                 app:layout_constraintTop_toBottomOf="@+id/auto_start_container" />
 
         </LinearLayout>
@@ -55,7 +55,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="8dp">
+            android:padding="4dp">
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
@@ -86,7 +86,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="8dp"
+            android:padding="4dp"
             android:visibility="@{viewModel.isNotificationChecked ? View.VISIBLE : View.GONE}">
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -105,12 +105,6 @@
                 android:checked="@{viewModel.isNotificationVibrationChecked}"
                 android:onCheckedChanged="@{(switch, checked) -> viewModel.onNotificationVibrationCheckedChanged(checked)}"
                 app:layout_constraintEnd_toEndOf="parent" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/colorGray"
-                app:layout_constraintBottom_toBottomOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>

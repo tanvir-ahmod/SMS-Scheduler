@@ -9,7 +9,7 @@
 
         <variable
             name="viewModel"
-            type="com.example.scheduledmessenger.ui.add_sms.AddSmsViewModel" />
+            type="com.example.smsScheduler.ui.add_sms.AddSmsViewModel" />
 
     </data>
 

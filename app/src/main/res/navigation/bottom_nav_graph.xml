@@ -6,7 +6,7 @@
     app:startDestination="@id/homeFragment">
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.scheduledmessenger.ui.home.HomeFragment"
+        android:name="com.example.smsScheduler.ui.home.HomeFragment"
         android:label="Home"
         tools:layout="@layout/fragment_home">
         <action
@@ -15,7 +15,7 @@
     </fragment>
     <fragment
         android:id="@+id/timelineFragment"
-        android:name="com.example.scheduledmessenger.ui.timeline.TimelineFragment"
+        android:name="com.example.smsScheduler.ui.timeline.TimelineFragment"
         android:label="Timeline">
         <action
             android:id="@+id/action_timelineFragment_to_addSmsFragment"
@@ -23,7 +23,7 @@
     </fragment>
     <fragment
         android:id="@+id/logFragment"
-        android:name="com.example.scheduledmessenger.ui.log.LogFragment"
+        android:name="com.example.smsScheduler.ui.log.LogFragment"
         android:label="Log">
         <action
             android:id="@+id/action_logFragment_to_addSmsFragment"
@@ -31,11 +31,11 @@
     </fragment>
     <fragment
         android:id="@+id/settingFragment"
-        android:name="com.example.scheduledmessenger.ui.settings.SettingsFragment"
+        android:name="com.example.smsScheduler.ui.settings.SettingsFragment"
         android:label="Settings" />
     <fragment
         android:id="@+id/addSmsFragment"
-        android:name="com.example.scheduledmessenger.ui.add_sms.AddSmsFragment"
+        android:name="com.example.smsScheduler.ui.add_sms.AddSmsFragment"
         android:label="AddSms">
         <argument
             android:name="eventId"
@@ -49,6 +49,6 @@
     </fragment>
     <fragment
         android:id="@+id/showContactsFragment"
-        android:name="com.example.scheduledmessenger.ui.show_contacts.ShowContactsFragment"
+        android:name="com.example.smsScheduler.ui.show_contacts.ShowContactsFragment"
         android:label="Show Contacts" />
 </navigation>

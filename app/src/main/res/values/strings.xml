@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ScheduledMessenger</string>
+    <string name="app_name">SMS Scheduler</string>
     <string name="sms">SMS</string>
     <string name="current_status_of_sms">current status of SMS</string>
     <string name="total">Total</string>
