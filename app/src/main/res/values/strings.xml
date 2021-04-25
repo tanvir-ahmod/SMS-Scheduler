@@ -31,8 +31,8 @@
     <string name="enable_auto_start_title">Enable Auto Start</string>
     <string name="enable_auto_start_subtitle">if there is an issue with scheduling</string>
     <string name="about">About</string>
-    <string name="enable_event_notification">Enable event notification</string>
-    <string name="enable_notification_vibration">Enable notification\'s vibration</string>
+    <string name="enable_event_notification">Notification</string>
+    <string name="enable_notification_vibration">Notification vibration</string>
     <string name="status_colon">Status:</string>
     <string name="datetime_colon">DateTime:</string>
     <string name="summary">Summary</string>

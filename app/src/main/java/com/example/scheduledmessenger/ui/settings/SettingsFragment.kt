@@ -1,4 +1,4 @@
-package com.example.scheduledmessenger.ui.setting
+package com.example.scheduledmessenger.ui.settings
 
 import android.os.Bundle
 import android.view.View
@@ -8,9 +8,9 @@ import com.example.scheduledmessenger.databinding.FragmentSettingBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SettingFragment : BaseFragment<SettingViewModel, FragmentSettingBinding>() {
+class SettingsFragment : BaseFragment<SettingsViewModel, FragmentSettingBinding>() {
 
-    override val mViewModel: SettingViewModel by viewModels()
+    override val mViewModel: SettingsViewModel by viewModels()
 
     override fun getViewBinding(): FragmentSettingBinding =
         FragmentSettingBinding.inflate(layoutInflater).apply {

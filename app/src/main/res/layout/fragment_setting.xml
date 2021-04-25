@@ -9,7 +9,7 @@
 
         <variable
             name="viewModel"
-            type="com.example.scheduledmessenger.ui.setting.SettingViewModel" />
+            type="com.example.scheduledmessenger.ui.settings.SettingsViewModel" />
     </data>
 
     <LinearLayout
@@ -113,62 +113,5 @@
                 app:layout_constraintBottom_toBottomOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:text="@string/about"
-            android:textColor="@color/colorBlack"
-            android:textSize="16sp"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/root_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="8dp">
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/iv_info"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginEnd="16dp"
-                android:src="@drawable/ic_info"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_app_name"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:text="@string/app_name"
-                android:textColor="@color/colorBlack"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/iv_info"
-                app:layout_constraintTop_toTopOf="parent" />
-
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_version"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="10dp"
-                android:text="@{viewModel.versionNumber}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/iv_info"
-                app:layout_constraintTop_toBottomOf="@+id/tv_app_name" />
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
     </LinearLayout>
 </layout>

@@ -31,8 +31,8 @@
     </fragment>
     <fragment
         android:id="@+id/settingFragment"
-        android:name="com.example.scheduledmessenger.ui.setting.SettingFragment"
-        android:label="Setting" />
+        android:name="com.example.scheduledmessenger.ui.settings.SettingsFragment"
+        android:label="Settings" />
     <fragment
         android:id="@+id/addSmsFragment"
         android:name="com.example.scheduledmessenger.ui.add_sms.AddSmsFragment"
