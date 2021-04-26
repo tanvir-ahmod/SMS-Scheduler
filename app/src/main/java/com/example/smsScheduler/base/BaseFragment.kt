@@ -9,8 +9,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.viewbinding.ViewBinding
+import com.google.android.material.snackbar.Snackbar
 
 
 abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding> : Fragment() {
@@ -46,5 +49,14 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding> : Fragment() {
             "com.miui.permcenter.autostart.AutoStartManagementActivity"
         )
         startActivity(intent)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        mViewModel.showMessage.observe(requireActivity(), { message ->
+            if (!message.isNullOrEmpty()) {
+                Snackbar.make(mViewBinding.root, message, Snackbar.LENGTH_LONG).show()
+            }
+        })
     }
 }

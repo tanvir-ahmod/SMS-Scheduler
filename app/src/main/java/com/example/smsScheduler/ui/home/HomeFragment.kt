@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -21,7 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
 
-    private val upcomingEventAdapter = EventAdapter(this::onEditClicked, this::onDeleteClicked)
+    private val upcomingEventAdapter = EventAdapter(this::onLaunchButtonClicked)
 
     private val sendSmsPermissionCode = 100
     private val readContactPermissionCode = 200
@@ -124,27 +123,11 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
         findNavController().navigate(R.id.action_homeFragment_to_addSmsFragment)
     }
 
-    private fun onEditClicked(id: Int) {
+    private fun onLaunchButtonClicked(id: Int) {
         val action = HomeFragmentDirections.actionHomeFragmentToAddSmsFragment(id)
         findNavController().navigate(action)
     }
 
-    private fun onDeleteClicked(eventId: Int) {
-        AlertDialog.Builder(requireContext())
-            .setTitle(requireContext().resources.getString(R.string.delete_entry_title))
-            .setMessage(requireContext().resources.getString(R.string.delete_entry_message))
-            .setPositiveButton(
-                requireContext().resources.getString(R.string.delete_yes)
-            ) { _, _ ->
-                sharedViewModel.deleteEvent(eventId)
-            }
-            .setNegativeButton(
-                requireContext().resources.getString(R.string.delete_no),
-                null
-            )
-            .setIcon(android.R.drawable.ic_dialog_alert)
-            .show()
-    }
 
     private fun isGrantedReadContactPermission(): Boolean = ContextCompat.checkSelfPermission(
         requireContext(),

@@ -8,6 +8,7 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.*
 import android.view.View.OnTouchListener
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
@@ -35,6 +36,8 @@ class AddSmsFragment : BaseFragment<AddSmsViewModel, FragmentAddSmsBinding>() {
     private val args: AddSmsFragmentArgs by navArgs()
 
     override val mViewModel: AddSmsViewModel by viewModels()
+
+    private lateinit var menu: Menu
 
     override fun getViewBinding(): FragmentAddSmsBinding =
         FragmentAddSmsBinding.inflate(layoutInflater).apply {
@@ -165,18 +168,18 @@ class AddSmsFragment : BaseFragment<AddSmsViewModel, FragmentAddSmsBinding>() {
                 mViewBinding.llSimInfoContainer.addView(sim)
             }
         })
-        mViewModel.isVisibleContactIcon.observe(viewLifecycleOwner, Observer { isVisible ->
-            if (isVisible)
+        mViewModel.isEditable.observe(viewLifecycleOwner, Observer { isEditable ->
+            if (isEditable) {
                 mViewBinding.tvTo.setCompoundDrawablesWithIntrinsicBounds(
                     0,
                     0,
                     R.drawable.ic_contact,
                     0
                 )
-            else
+
+            } else {
                 mViewBinding.tvTo.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
-
-
+            }
         })
     }
 
@@ -231,12 +234,18 @@ class AddSmsFragment : BaseFragment<AddSmsViewModel, FragmentAddSmsBinding>() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_add, menu)
+        this.menu = menu
+        menu.findItem(R.id.delete)?.isVisible = mViewModel.eventId != 0
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.add -> {
                 mViewModel.addSMS()
+                true
+            }
+            R.id.delete -> {
+                onDeleteClicked()
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -246,5 +255,22 @@ class AddSmsFragment : BaseFragment<AddSmsViewModel, FragmentAddSmsBinding>() {
     override fun onDestroy() {
         sharedViewModel.contactNumber.value = ""
         super.onDestroy()
+    }
+
+    private fun onDeleteClicked() {
+        AlertDialog.Builder(requireContext())
+            .setTitle(requireContext().resources.getString(R.string.delete_entry_title))
+            .setMessage(requireContext().resources.getString(R.string.delete_entry_message))
+            .setPositiveButton(
+                requireContext().resources.getString(R.string.delete_yes)
+            ) { _, _ ->
+                mViewModel.deleteEvent()
+            }
+            .setNegativeButton(
+                requireContext().resources.getString(R.string.delete_no),
+                null
+            )
+            .setIcon(android.R.drawable.ic_dialog_alert)
+            .show()
     }
 }

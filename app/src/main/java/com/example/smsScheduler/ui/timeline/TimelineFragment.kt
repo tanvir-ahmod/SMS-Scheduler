@@ -2,13 +2,11 @@ package com.example.smsScheduler.ui.timeline
 
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.smsScheduler.R
 import com.example.smsScheduler.base.BaseFragment
 import com.example.smsScheduler.databinding.FragmentTimelineBinding
 import com.example.smsScheduler.ui.MainViewModel
@@ -24,7 +22,7 @@ class TimelineFragment : BaseFragment<TimelineViewModel, FragmentTimelineBinding
     override val mViewModel: TimelineViewModel by viewModels()
 
     private val timelineAdapter =
-        EventAdapter(this::onEditClicked, this::onDeleteClicked)
+        EventAdapter(this::onLaunchButtonClicked)
 
     override fun getViewBinding(): FragmentTimelineBinding =
         FragmentTimelineBinding.inflate(layoutInflater)
@@ -44,28 +42,8 @@ class TimelineFragment : BaseFragment<TimelineViewModel, FragmentTimelineBinding
         })
     }
 
-    private fun onEditClicked(id: Int) {
+    private fun onLaunchButtonClicked(id: Int) {
         val action = TimelineFragmentDirections.actionTimelineFragmentToAddSmsFragment(id)
         findNavController().navigate(action)
-    }
-
-
-    private fun onDeleteClicked(eventId: Int) {
-
-        AlertDialog.Builder(requireContext())
-            .setTitle(requireContext().resources.getString(R.string.delete_entry_title))
-            .setMessage(requireContext().resources.getString(R.string.delete_entry_message))
-            .setPositiveButton(
-                requireContext().resources.getString(R.string.delete_yes)
-            ) { _, _ ->
-                sharedViewModel.deleteEvent(eventId)
-            }
-            .setNegativeButton(
-                requireContext().resources.getString(R.string.delete_no),
-                null
-            )
-            .setIcon(android.R.drawable.ic_dialog_alert)
-            .show()
-
     }
 }

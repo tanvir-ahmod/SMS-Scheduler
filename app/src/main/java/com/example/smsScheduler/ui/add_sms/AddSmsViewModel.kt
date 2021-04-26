@@ -35,7 +35,8 @@ class AddSmsViewModel @ViewModelInject constructor(
 ) :
     BaseViewModel() {
 
-    private var eventId = 0
+    var eventId = 0
+        private set
 
     val etReceiverNumber = ObservableField<String>("")
     val showCancelButton = ObservableField<Boolean>(false)
@@ -70,8 +71,8 @@ class AddSmsViewModel @ViewModelInject constructor(
     val availableSims: LiveData<List<CheckBox>> = _availableSims
     private val sims: ArrayList<CheckBox> = arrayListOf()
 
-    private val _isVisibleContactIcon = MutableLiveData<Boolean>(true)
-    val isVisibleContactIcon: LiveData<Boolean> = _isVisibleContactIcon
+    private val _isEditable = MutableLiveData<Boolean>(true)
+    val isEditable: LiveData<Boolean> = _isEditable
 
     fun addReceiverNumber() {
         if (!isFormEditable.get()!!)
@@ -253,8 +254,8 @@ class AddSmsViewModel @ViewModelInject constructor(
         eventId = id
         // Fetch data to edit
         if (eventId != 0) {
-            _actionBarText.value = "Edit SMS"
             try {
+                _actionBarText.value = "Edit SMS"
                 viewModelScope.launch {
                     val event = scheduleRepository.getEventById(eventId)
 
@@ -276,8 +277,7 @@ class AddSmsViewModel @ViewModelInject constructor(
 
                     if (event.status == Constants.SENT) {
                         setAsNotEditable()
-                    }
-                    else if (event.status == Constants.PENDING || event.status == Constants.DISMISSED) {
+                    } else if (event.status == Constants.PENDING || event.status == Constants.DISMISSED) {
                         showCancelButton.set(true)
                     }
                 }
@@ -289,7 +289,7 @@ class AddSmsViewModel @ViewModelInject constructor(
 
     private fun setAsNotEditable() {
         isFormEditable.set(false)
-        _isVisibleContactIcon.value = false
+        _isEditable.value = false
         _actionBarText.value = "View SMS"
     }
 
@@ -351,5 +351,14 @@ class AddSmsViewModel @ViewModelInject constructor(
 
     private fun setSimChecked(subscriptionID: Int) {
         onCheckBoxChecked(subscriptionID, true)
+    }
+
+    fun deleteEvent() {
+        viewModelScope.launch {
+            alarmManager.dismissAlarm(eventId)
+            scheduleRepository.deleteEventById(eventId)
+            showMessage.value = "Deleted Successfully"
+            _popBack.value = TriggeredEvent(true)
+        }
     }
 }
