@@ -9,9 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.snackbar.Snackbar
 
@@ -34,6 +32,11 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding> : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         return mViewBinding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        hideKeyboard(requireContext(), requireView())
     }
 
     protected fun hideKeyboard(context: Context, view: View) {
