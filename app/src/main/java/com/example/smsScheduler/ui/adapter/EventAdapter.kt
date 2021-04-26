@@ -32,7 +32,10 @@ class EventAdapter(private val onEditClicked: (id: Int) -> Unit) :
                 if (index != numbers.size - 1)
                     phoneNumbers.append(", ")
             }
-            val message = eventModel.message
+            var message = eventModel.message
+            if (message.length > 55) {
+                message = message.substring(0, 50) + "..."
+            }
             val date =
                 Utils.timelineDateFormatter.format(eventModel.timestamp)
 
