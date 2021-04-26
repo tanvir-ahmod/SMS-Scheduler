@@ -58,7 +58,7 @@ class ContactsServiceImp @Inject constructor(@ApplicationContext private val con
                 cursor.close()
             }
             if (contactName.isNotEmpty())
-                names.add(contactName)
+                names.add("$contactName (${phoneNumber.phoneNumber})")
             else
                 names.add(phoneNumber.phoneNumber)
         }
