@@ -28,9 +28,14 @@ class EventAdapter(private val onEditClicked: (id: Int) -> Unit) :
             val numbers = eventModel.receivers
             val phoneNumbers = StringBuilder()
             for ((index, number) in numbers.withIndex()) {
-                phoneNumbers.append(number)
-                if (index != numbers.size - 1)
-                    phoneNumbers.append(", ")
+                if (phoneNumbers.length + number.length < 45) {
+                    phoneNumbers.append(number)
+                    if (index != numbers.size - 1)
+                        phoneNumbers.append(", ")
+                } else {
+                    phoneNumbers.append("...")
+                    break
+                }
             }
             var message = eventModel.message
             if (message.length > 55) {
