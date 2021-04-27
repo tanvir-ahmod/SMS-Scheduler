@@ -36,4 +36,5 @@
     <string name="status_colon">Status:</string>
     <string name="datetime_colon">DateTime:</string>
     <string name="summary">Summary</string>
+    <string name="sort">Sort</string>
 </resources>

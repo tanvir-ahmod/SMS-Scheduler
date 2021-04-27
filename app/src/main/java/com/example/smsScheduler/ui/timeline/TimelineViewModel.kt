@@ -21,6 +21,8 @@ class TimelineViewModel @ViewModelInject constructor(
     private val _timeLineData = MutableLiveData<List<EventModel>>()
     val timeLineData: LiveData<List<EventModel>> = _timeLineData
 
+    var isSortDescending = false
+
     init {
         getTimelineData()
     }
@@ -28,7 +30,7 @@ class TimelineViewModel @ViewModelInject constructor(
     private fun getTimelineData() {
         viewModelScope.launch {
 
-            val allEvents = scheduleRepository.getEventWithSmsAndPhoneNumbers()
+            val allEvents = scheduleRepository.getEventWithSmsAndPhoneNumbers(isSortDescending)
             allEvents.collect { events ->
                 val timelineData = mutableListOf<EventModel>()
                 for (event in events) {
@@ -51,6 +53,11 @@ class TimelineViewModel @ViewModelInject constructor(
             }
         }
 
+    }
+
+    fun updateSortOrder() {
+        isSortDescending = !isSortDescending
+        getTimelineData()
     }
 
 }

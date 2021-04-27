@@ -36,8 +36,12 @@ interface EventsDao {
     fun getUpcomingEvents(timestamp: Long): List<Event>
 
     @Transaction
-    @Query("SELECT * FROM EVENTS")
-    fun getEventWithSmsAndPhoneNumbers(): Flow<List<EventWithSmsAndPhoneNumbers>>
+    @Query("SELECT * FROM EVENTS ORDER BY TIMESTAMP DESC")
+    fun getEventWithSmsAndPhoneNumbersOrderByDesc(): Flow<List<EventWithSmsAndPhoneNumbers>>
+
+    @Transaction
+    @Query("SELECT * FROM EVENTS ORDER BY TIMESTAMP ASC")
+    fun getEventWithSmsAndPhoneNumbersOrderByAsc(): Flow<List<EventWithSmsAndPhoneNumbers>>
 
     @Transaction
     @Query("SELECT COUNT(*) FROM EVENTS WHERE STATUS = :status")

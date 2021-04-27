@@ -12,7 +12,7 @@ interface ScheduleRepository {
     suspend fun insertPhoneNumbers(phoneNumbers: List<PhoneNumber>)
     suspend fun insertLog(eventLog: EventLog): Long
     fun getSmsAndPhoneNumbers(): Flow<List<SmsAndPhoneNumbers>>
-    fun getEventWithSmsAndPhoneNumbers(): Flow<List<EventWithSmsAndPhoneNumbers>>
+    fun getEventWithSmsAndPhoneNumbers(isSortDescending : Boolean): Flow<List<EventWithSmsAndPhoneNumbers>>
     fun getUpcomingSMSEvents(timestamp: Long): Flow<List<EventWithSmsAndPhoneNumbers>>
     fun getAllLogs(): Flow<List<EventLog>>
     suspend fun updateEvent(event: Event): Int

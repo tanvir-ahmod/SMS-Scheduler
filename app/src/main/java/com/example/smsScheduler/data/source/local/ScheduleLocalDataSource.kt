@@ -4,10 +4,7 @@ import com.example.smsScheduler.data.source.local.dao.EventsDao
 import com.example.smsScheduler.data.source.local.dao.EventLogsDao
 import com.example.smsScheduler.data.source.local.dao.PhoneNumbersDao
 import com.example.smsScheduler.data.source.local.dao.SmsDao
-import com.example.smsScheduler.data.source.local.entity.Event
-import com.example.smsScheduler.data.source.local.entity.EventLog
-import com.example.smsScheduler.data.source.local.entity.PhoneNumber
-import com.example.smsScheduler.data.source.local.entity.SMS
+import com.example.smsScheduler.data.source.local.entity.*
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
@@ -35,7 +32,10 @@ class ScheduleLocalDataSource @Inject constructor(
 
     fun getSmsAndPhoneNumbers() = smsDao.getSmsAndPhoneNumbers()
 
-    fun getEventWithSmsAndPhoneNumbers() = eventsDao.getEventWithSmsAndPhoneNumbers()
+    fun getEventWithSmsAndPhoneNumbers(isSortDescending: Boolean) =
+        if (isSortDescending) eventsDao.getEventWithSmsAndPhoneNumbersOrderByDesc()
+        else eventsDao.getEventWithSmsAndPhoneNumbersOrderByAsc()
+
 
     fun getUpcomingSMSEvents(timestamp: Long) = eventsDao.getUpcomingSMSEvents(timestamp)
 
@@ -62,4 +62,5 @@ class ScheduleLocalDataSource @Inject constructor(
         eventsDao.deleteEventById(id)
 
     suspend fun getFailedEvents(timestamp: Long) = eventsDao.getFailedEvents(timestamp)
+
 }

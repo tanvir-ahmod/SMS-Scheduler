@@ -37,8 +37,6 @@ class AddSmsFragment : BaseFragment<AddSmsViewModel, FragmentAddSmsBinding>() {
 
     override val mViewModel: AddSmsViewModel by viewModels()
 
-    private lateinit var menu: Menu
-
     override fun getViewBinding(): FragmentAddSmsBinding =
         FragmentAddSmsBinding.inflate(layoutInflater).apply {
             viewModel = mViewModel
@@ -234,7 +232,6 @@ class AddSmsFragment : BaseFragment<AddSmsViewModel, FragmentAddSmsBinding>() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_add, menu)
-        this.menu = menu
         menu.findItem(R.id.delete)?.isVisible = mViewModel.eventId != 0
     }
 
