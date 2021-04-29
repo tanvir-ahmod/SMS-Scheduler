@@ -38,16 +38,16 @@ class AddSmsViewModel @ViewModelInject constructor(
     var eventId = 0
         private set
 
-    val etReceiverNumber = ObservableField<String>("")
-    val showCancelButton = ObservableField<Boolean>(false)
+    val etReceiverNumber = ObservableField("")
+    val showCancelButton = ObservableField(false)
     private val selectDate = Calendar.getInstance()
     private val receivers: ArrayList<String> = arrayListOf()
     val selectedDateText =
-        ObservableField<String>(Utils.dateFormatter.format(selectDate.time).toString())
+        ObservableField(Utils.dateFormatter.format(selectDate.time).toString())
     val selectedTimeText =
-        ObservableField<String>(Utils.timeFormatter.format(selectDate.time).toString())
+        ObservableField(Utils.timeFormatter.format(selectDate.time).toString())
 
-    val isFormEditable = ObservableField<Boolean>(true)
+    val isFormEditable = ObservableField(true)
     val etMessage = ObservableField<String>()
     val messageError = ObservableField<String>()
     val receiverError = ObservableField<String>()
@@ -55,7 +55,7 @@ class AddSmsViewModel @ViewModelInject constructor(
     private val _popBack = MutableLiveData<TriggeredEvent<Boolean>>()
     val popBack: LiveData<TriggeredEvent<Boolean>> = _popBack
 
-    private val _actionBarText = MutableLiveData<String>("Add SMS")
+    private val _actionBarText = MutableLiveData("Add SMS")
     val actionBarText: LiveData<String> = _actionBarText
 
     private val _receiverNumbers = MutableLiveData<List<String>>()
@@ -71,7 +71,7 @@ class AddSmsViewModel @ViewModelInject constructor(
     val availableSims: LiveData<List<CheckBox>> = _availableSims
     private val sims: ArrayList<CheckBox> = arrayListOf()
 
-    private val _isEditable = MutableLiveData<Boolean>(true)
+    private val _isEditable = MutableLiveData(true)
     val isEditable: LiveData<Boolean> = _isEditable
 
     fun addReceiverNumber() {

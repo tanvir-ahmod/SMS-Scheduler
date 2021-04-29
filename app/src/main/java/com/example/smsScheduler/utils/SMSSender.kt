@@ -18,14 +18,14 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+const val SENT = "SMS_SENT"
+const val DELIVERED = "SMS_DELIVERED"
+
 class SMSSender @Inject constructor(
     @ApplicationContext private val context: Context,
     private val scheduleRepository: ScheduleRepository,
     private val notification: Notification
 ) {
-    private val SENT = "SMS_SENT"
-    private val DELIVERED = "SMS_DELIVERED"
-
     private fun sendSms(subscriptionId: Int, phoneNumbers: List<PhoneNumber>, message: String) {
         for (phoneNumber in phoneNumbers) {
             send(subscriptionId, phoneNumber.phoneNumber, message)

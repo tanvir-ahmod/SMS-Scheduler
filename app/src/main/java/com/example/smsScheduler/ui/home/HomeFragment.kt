@@ -25,8 +25,6 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
     private val sendSmsPermissionCode = 100
     private val readContactPermissionCode = 200
 
-    private val sharedViewModel: MainViewModel by activityViewModels()
-
     override val mViewModel: HomeViewModel by viewModels()
 
     override fun getViewBinding(): FragmentHomeBinding = FragmentHomeBinding.inflate(layoutInflater)
@@ -50,24 +48,24 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
     }
 
     private fun setUpObservers() {
-        mViewModel.totalSms.observe(viewLifecycleOwner, Observer { totalMessage ->
+        mViewModel.totalSms.observe(viewLifecycleOwner, { totalMessage ->
             mViewBinding.tvTotalSms.text = totalMessage.toString()
         })
-        mViewModel.totalSentSms.observe(viewLifecycleOwner, Observer { totalSent ->
+        mViewModel.totalSentSms.observe(viewLifecycleOwner, { totalSent ->
             mViewBinding.tvSentSms.text = totalSent.toString()
         })
-        mViewModel.totalPendingSms.observe(viewLifecycleOwner, Observer { totalPending ->
+        mViewModel.totalPendingSms.observe(viewLifecycleOwner, { totalPending ->
             mViewBinding.tvPendingSms.text = totalPending.toString()
         })
-        mViewModel.totalFailedSms.observe(viewLifecycleOwner, Observer { totalFailed ->
+        mViewModel.totalFailedSms.observe(viewLifecycleOwner, { totalFailed ->
             mViewBinding.tvFailedSms.text = totalFailed.toString()
         })
-        mViewModel.upcomingEvents.observe(viewLifecycleOwner, Observer { events ->
+        mViewModel.upcomingEvents.observe(viewLifecycleOwner, { events ->
             upcomingEventAdapter.addTimeLineData(events)
             mViewBinding.tvNoDataFound.visibility =
                 if (events.isEmpty()) View.VISIBLE else View.GONE
         })
-        mViewModel.hasUpcomingEvents.observe(viewLifecycleOwner, Observer { hasEvents ->
+        mViewModel.hasUpcomingEvents.observe(viewLifecycleOwner, { hasEvents ->
             if (hasEvents) {
                 if (!isGrantedReadContactPermission()) {
                     requestReadContactPermission()

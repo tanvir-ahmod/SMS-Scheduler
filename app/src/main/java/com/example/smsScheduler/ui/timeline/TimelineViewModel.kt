@@ -21,7 +21,7 @@ class TimelineViewModel @ViewModelInject constructor(
     private val _timeLineData = MutableLiveData<List<EventModel>>()
     val timeLineData: LiveData<List<EventModel>> = _timeLineData
 
-    var isSortDescending = false
+    private var isSortDescending = false
 
     init {
         getTimelineData()

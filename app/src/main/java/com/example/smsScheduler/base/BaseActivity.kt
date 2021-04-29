@@ -22,7 +22,7 @@ abstract class BaseActivity<VM : BaseViewModel, VB : ViewBinding> : AppCompatAct
         super.onCreate(savedInstanceState)
 
         mViewBinding = getViewBinding()
-        mViewModel.showLoader.observe(this, Observer { isShow ->
+        mViewModel.showLoader.observe(this, { isShow ->
             if (isShow) {
                 try {
                     loader.dismiss()
@@ -41,7 +41,7 @@ abstract class BaseActivity<VM : BaseViewModel, VB : ViewBinding> : AppCompatAct
             }
         })
 
-        mViewModel.showMessage.observe(this, Observer { message ->
+        mViewModel.showMessage.observe(this, { message ->
             if (!message.isNullOrEmpty()) {
                 Snackbar.make(mViewBinding.root, message, Snackbar.LENGTH_LONG).show()
             }

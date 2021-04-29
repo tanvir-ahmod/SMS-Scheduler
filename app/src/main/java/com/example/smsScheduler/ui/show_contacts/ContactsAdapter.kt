@@ -21,7 +21,7 @@ class ContactsAdapter(private val onItemClicked: (number: String) -> Unit) :
 
     class CameraHolder(private val binding: ItemContactBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        var generator: ColorGenerator = ColorGenerator.MATERIAL
+        private var generator: ColorGenerator = ColorGenerator.MATERIAL
         fun bindData(contact: Contact, onItemClicked: (number: String) -> Unit) {
             binding.tvName.text = contact.name
             binding.tvPhone.text = contact.phoneNumber

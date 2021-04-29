@@ -21,8 +21,6 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class TimelineFragment : BaseFragment<TimelineViewModel, FragmentTimelineBinding>() {
 
-    private val sharedViewModel: MainViewModel by activityViewModels()
-
     override val mViewModel: TimelineViewModel by viewModels()
 
     private val timelineAdapter =
@@ -44,7 +42,7 @@ class TimelineFragment : BaseFragment<TimelineViewModel, FragmentTimelineBinding
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        mViewModel.timeLineData.observe(viewLifecycleOwner, Observer { events ->
+        mViewModel.timeLineData.observe(viewLifecycleOwner, { events ->
             timelineAdapter.addTimeLineData(events)
             mViewBinding.tvNoDataFound.visibility =
                 if (events.isEmpty()) View.VISIBLE else View.GONE

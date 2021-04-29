@@ -9,7 +9,7 @@ import com.example.smsScheduler.data.source.local.entity.EventLog
 
 
 class LogViewModel @ViewModelInject constructor(
-    private val scheduleRepository: ScheduleRepository
+    scheduleRepository: ScheduleRepository
 ) :
     BaseViewModel() {
 

@@ -57,7 +57,7 @@ class ShowContactsFragment : BaseFragment<ShowContactsViewModel, FragmentShowCon
     }
 
     private fun setUpObservers() {
-        mViewModel.contacts.observe(viewLifecycleOwner, Observer { contacts ->
+        mViewModel.contacts.observe(viewLifecycleOwner, { contacts ->
             contactsAdapter.addContacts(contacts)
         })
     }

@@ -16,7 +16,7 @@ class AutoStartEnableDialog : DialogFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         viewDataBinding = DialogAutoStartBinding.inflate(inflater, container, false)
         return viewDataBinding.root
     }

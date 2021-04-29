@@ -28,7 +28,7 @@ class LogFragment : BaseFragment<LogViewModel, FragmentLogBinding>() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        mViewModel.logData.observe(viewLifecycleOwner, Observer { logs ->
+        mViewModel.logData.observe(viewLifecycleOwner, { logs ->
             logAdapter.addLogData(logs)
             mViewBinding.tvNoDataFound.visibility =
                 if (logs.isEmpty()) View.VISIBLE else View.GONE

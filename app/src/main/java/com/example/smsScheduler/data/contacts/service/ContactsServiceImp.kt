@@ -36,7 +36,7 @@ class ContactsServiceImp @Inject constructor(@ApplicationContext private val con
         return contacts
     }
 
-    suspend fun getContactNames(
+    fun getContactNames(
         phoneNumbers: List<PhoneNumber>
     ): List<String> {
         val names = mutableListOf<String>()

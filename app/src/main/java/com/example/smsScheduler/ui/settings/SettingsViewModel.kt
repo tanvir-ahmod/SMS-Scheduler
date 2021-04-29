@@ -11,10 +11,10 @@ class SettingsViewModel @ViewModelInject constructor(
     private val sharedPrefManager: SharedPrefManager
 ) :
     BaseViewModel() {
-    val isShowAutoStart = ObservableField<Boolean>(false)
-    val isNotificationChecked = ObservableField<Boolean>(sharedPrefManager.getNotificationStatus())
+    val isShowAutoStart = ObservableField(false)
+    val isNotificationChecked = ObservableField(sharedPrefManager.getNotificationStatus())
     val isNotificationVibrationChecked =
-        ObservableField<Boolean>(sharedPrefManager.getNotificationVibrationStatus())
+        ObservableField(sharedPrefManager.getNotificationVibrationStatus())
 
     init {
         verifyAutoStartEnableSetting()

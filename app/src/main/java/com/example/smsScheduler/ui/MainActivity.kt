@@ -20,7 +20,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
 
-    lateinit var navController: NavController
+    private lateinit var navController: NavController
 
     override val mViewModel: MainViewModel by viewModels()
 

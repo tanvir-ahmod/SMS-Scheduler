@@ -64,10 +64,10 @@ class AddSmsFragment : BaseFragment<AddSmsViewModel, FragmentAddSmsBinding>() {
     private fun initListeners() {
 
         mViewBinding.tvTo.setOnTouchListener(OnTouchListener { _, event ->
-            val DRAWABLE_RIGHT = 2
+            val drawableRight = 2
             if (event.action == MotionEvent.ACTION_UP) {
-                if (mViewBinding.tvTo.compoundDrawables[DRAWABLE_RIGHT] != null)
-                    if (event.rawX >= mViewBinding.tvTo.right - mViewBinding.tvTo.compoundDrawables[DRAWABLE_RIGHT].bounds.width()) {
+                if (mViewBinding.tvTo.compoundDrawables[drawableRight] != null)
+                    if (event.rawX >= mViewBinding.tvTo.right - mViewBinding.tvTo.compoundDrawables[drawableRight].bounds.width()) {
                         if (isGrantedReadContactPermission()) {
                             requestReadContactPermission()
                         } else
@@ -114,11 +114,11 @@ class AddSmsFragment : BaseFragment<AddSmsViewModel, FragmentAddSmsBinding>() {
     }
 
     private fun setUpObservers() {
-        mViewModel.actionBarText.observe(viewLifecycleOwner, Observer { title ->
+        mViewModel.actionBarText.observe(viewLifecycleOwner, { title ->
             (activity as AppCompatActivity?)!!.supportActionBar?.title = title
         })
 
-        mViewModel.receiverNumbers.observe(viewLifecycleOwner, Observer { numbers ->
+        mViewModel.receiverNumbers.observe(viewLifecycleOwner, { numbers ->
             mViewBinding.chipGroupNumbers.removeAllViews()
             for ((position, number) in numbers.withIndex()) {
                 val chip = layoutInflater.inflate(
@@ -135,38 +135,38 @@ class AddSmsFragment : BaseFragment<AddSmsViewModel, FragmentAddSmsBinding>() {
         })
 
         mViewModel.showDatePicker.observe(
-            viewLifecycleOwner, Observer {
+            viewLifecycleOwner, {
                 it.getContentIfNotHandled()?.let { date ->
                     showDatePicker(date)
                 }
             })
 
         mViewModel.showTimePicker.observe(
-            viewLifecycleOwner, Observer {
+            viewLifecycleOwner, {
                 it.getContentIfNotHandled()?.let { time ->
                     showTimePicker(time)
                 }
             })
 
         mViewModel.popBack.observe(
-            viewLifecycleOwner, Observer {
+            viewLifecycleOwner, {
                 it.getContentIfNotHandled()?.let {
                     hideKeyboard(requireContext(), mViewBinding.root)
                     findNavController().navigateUp()
                 }
             })
 
-        sharedViewModel.contactNumber.observe(viewLifecycleOwner, Observer { phoneNumber ->
+        sharedViewModel.contactNumber.observe(viewLifecycleOwner, { phoneNumber ->
             mViewModel.etReceiverNumber.set(phoneNumber)
         })
 
-        mViewModel.availableSims.observe(viewLifecycleOwner, Observer { sims ->
+        mViewModel.availableSims.observe(viewLifecycleOwner, { sims ->
             mViewBinding.llSimInfoContainer.removeAllViews()
             for (sim in sims) {
                 mViewBinding.llSimInfoContainer.addView(sim)
             }
         })
-        mViewModel.isEditable.observe(viewLifecycleOwner, Observer { isEditable ->
+        mViewModel.isEditable.observe(viewLifecycleOwner, { isEditable ->
             if (isEditable) {
                 mViewBinding.tvTo.setCompoundDrawablesWithIntrinsicBounds(
                     0,
@@ -184,7 +184,7 @@ class AddSmsFragment : BaseFragment<AddSmsViewModel, FragmentAddSmsBinding>() {
     private fun showDatePicker(date: Calendar) {
         val mDatePicker = DatePickerDialog(
             requireContext(),
-            DatePickerDialog.OnDateSetListener { _, selectedYear, selectedMonth, selectedDay ->
+            { _, selectedYear, selectedMonth, selectedDay ->
                 mViewModel.changeDate(selectedYear, selectedMonth, selectedDay)
             },
             date.get(Calendar.YEAR),
@@ -197,7 +197,7 @@ class AddSmsFragment : BaseFragment<AddSmsViewModel, FragmentAddSmsBinding>() {
     private fun showTimePicker(date: Calendar) {
         val mTimePicker = TimePickerDialog(
             requireContext(),
-            TimePickerDialog.OnTimeSetListener { _, selectedHour, selectedMinute ->
+            { _, selectedHour, selectedMinute ->
                 mViewModel.changeTime(selectedHour, selectedMinute)
             },
             date.get(Calendar.HOUR_OF_DAY),
