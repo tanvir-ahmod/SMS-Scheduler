@@ -90,4 +90,11 @@ dependencies {
     //Contact icon
     implementation 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
 
+    //Testing
+    androidTestImplementation "androidx.arch.core:core-testing:$coreTestingVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:$espressoVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.espressoVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-intents:$rootProject.espressoVersion"
+
+
 }
