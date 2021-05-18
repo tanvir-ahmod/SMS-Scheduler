@@ -58,6 +58,85 @@ class EventDaoTest {
             time
         }
         eventsDao.insertEvent(Event( status = Constants.PENDING, timestamp = datePlusOneMonth.time))
+        eventsDao.insertEvent(Event( status = Constants.SENT, timestamp = System.currentTimeMillis()))
         assertThat(eventsDao.getUpcomingEvents(System.currentTimeMillis()).size, equalTo(1))
+    }
+
+    @Test
+    fun testUpdatingEvents() = runBlocking {
+        val event = Event( id = 1, status = Constants.PENDING, timestamp = System.currentTimeMillis())
+        eventsDao.insertEvent(event)
+        event.status = Constants.SENT
+        eventsDao.updateEvent(event)
+        assertThat(eventsDao.getEventById(1).status, equalTo(Constants.SENT))
+    }
+
+    @Test
+    fun testDeletingEvents() = runBlocking {
+        val event = Event( id = 1, status = Constants.PENDING, timestamp = System.currentTimeMillis())
+        eventsDao.insertEvent(event)
+        eventsDao.deleteEvent(event)
+        assertThat(eventsDao.getEventWithSmsAndPhoneNumbersOrderByAsc().first().size, equalTo(0))
+    }
+
+    @Test
+    fun testDeletingEventsByID() = runBlocking {
+        val event = Event( id = 1, status = Constants.PENDING, timestamp = System.currentTimeMillis())
+        eventsDao.insertEvent(event)
+        eventsDao.deleteEventById(1)
+        assertThat(eventsDao.getEventWithSmsAndPhoneNumbersOrderByAsc().first().size, equalTo(0))
+    }
+
+    @Test
+    fun testEventWithSmsAndPhoneNumbersOrderByDesc() = runBlocking {
+        val event1 = Event( id = 1, status = Constants.PENDING, timestamp = System.currentTimeMillis())
+        val event2 = Event( id = 2, status = Constants.PENDING, timestamp = System.currentTimeMillis())
+        val event3 = Event( id = 3, status = Constants.PENDING, timestamp = System.currentTimeMillis())
+        eventsDao.insertEvent(event1)
+        eventsDao.insertEvent(event2)
+        eventsDao.insertEvent(event3)
+        val events = eventsDao.getEventWithSmsAndPhoneNumbersOrderByAsc().first()
+
+        var isSortedDec = true
+        for( i in 0..2){
+            if(events[i].event.timestamp > event3.timestamp){
+                isSortedDec = false
+                break
+            }
+        }
+
+        assertThat(isSortedDec, equalTo(true))
+    }
+
+    @Test
+    fun testEventWithSmsAndPhoneNumbersOrderByAsc() = runBlocking {
+        val event1 = Event( id = 1, status = Constants.PENDING, timestamp = System.currentTimeMillis())
+        val event2 = Event( id = 2, status = Constants.PENDING, timestamp = System.currentTimeMillis())
+        val event3 = Event( id = 3, status = Constants.PENDING, timestamp = System.currentTimeMillis())
+        eventsDao.insertEvent(event1)
+        eventsDao.insertEvent(event2)
+        eventsDao.insertEvent(event3)
+        val events = eventsDao.getEventWithSmsAndPhoneNumbersOrderByAsc().first()
+
+        var isSortedAsc = true
+        for( i in 2 downTo 1){
+            if(events[i].event.timestamp < event1.timestamp){
+                isSortedAsc = false
+                break
+            }
+        }
+
+        assertThat(isSortedAsc, equalTo(true))
+    }
+
+    @Test
+    fun testGetFailedEvents() = runBlocking {
+        val dateMinusOneMonth = Calendar.getInstance().run {
+            add(Calendar.MONTH, -1)
+            time
+        }
+        val event = Event( id = 1, status = Constants.PENDING, timestamp = dateMinusOneMonth.time)
+        eventsDao.insertEvent(event)
+        assertThat(eventsDao.getFailedEvents(System.currentTimeMillis()).size, equalTo(1))
     }
 }
